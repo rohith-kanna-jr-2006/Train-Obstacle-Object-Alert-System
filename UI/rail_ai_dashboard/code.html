@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>RAIL-AI SENTINEL | Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "tertiary": "#82db7e",
+                        "on-primary": "#002c71",
+                        "primary": "#b1c5ff",
+                        "surface-container": "#112036",
+                        "inverse-primary": "#345baf",
+                        "surface-container-low": "#0d1c32",
+                        "on-primary-container": "#8dadff",
+                        "on-secondary": "#1e304f",
+                        "background": "#041329",
+                        "on-secondary-container": "#a3b5db",
+                        "on-error": "#690005",
+                        "surface-container-lowest": "#010e24",
+                        "tertiary-fixed": "#9df898",
+                        "surface-bright": "#2c3951",
+                        "on-tertiary": "#00390a",
+                        "secondary-container": "#354767",
+                        "surface-container-high": "#1c2a41",
+                        "secondary-fixed-dim": "#b5c7ed",
+                        "surface-variant": "#27354c",
+                        "on-surface-variant": "#c4c6d3",
+                        "error-container": "#93000a",
+                        "on-secondary-fixed-variant": "#354767",
+                        "on-primary-fixed-variant": "#144296",
+                        "surface-tint": "#b1c5ff",
+                        "outline-variant": "#434652",
+                        "primary-container": "#0b3d91",
+                        "primary-fixed": "#dae2ff",
+                        "surface-dim": "#041329",
+                        "on-error-container": "#ffdad6",
+                        "secondary": "#b5c7ed",
+                        "outline": "#8e909d",
+                        "inverse-on-surface": "#233148",
+                        "primary-fixed-dim": "#b1c5ff",
+                        "on-tertiary-fixed": "#002204",
+                        "tertiary-container": "#004e11",
+                        "on-surface": "#d6e3ff",
+                        "on-tertiary-container": "#6bc269",
+                        "on-secondary-fixed": "#061b39",
+                        "secondary-fixed": "#d7e3ff",
+                        "on-tertiary-fixed-variant": "#005312",
+                        "on-background": "#d6e3ff",
+                        "surface-container-highest": "#27354c",
+                        "tertiary-fixed-dim": "#82db7e",
+                        "inverse-surface": "#d6e3ff",
+                        "surface": "#041329",
+                        "on-primary-fixed": "#001947",
+                        "error": "#ffb4ab"
+                    },
+                    fontFamily: {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .scanline {
+            background: linear-gradient(to bottom, transparent 50%, rgba(177, 197, 255, 0.05) 50%);
+            background-size: 100% 4px;
+        }
+        .tactical-glow {
+            box-shadow: inset 0 0 10px rgba(177, 197, 255, 0.1);
+            border: 1px solid rgba(67, 70, 82, 0.15);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body overflow-hidden h-screen flex flex-col">
+<!-- Top Navigation Bar (Shared Component Logic) -->
+<header class="bg-[#041329] text-[#B1C5FF] font-['Space_Grotesk'] font-bold uppercase tracking-tighter flex justify-between items-center w-full px-6 py-4 border-b-0 docked full-width top-0">
+<div class="flex items-center gap-4">
+<span class="text-xl font-black text-[#B1C5FF] italic">RAIL-AI SENTINEL</span>
+<div class="h-6 w-px bg-outline-variant/30"></div>
+<h1 class="text-sm tracking-widest opacity-80">INDIAN RAILWAYS – OBSTACLE ALERT SYSTEM</h1>
+</div>
+<nav class="hidden md:flex items-center gap-8 text-xs">
+<div class="flex flex-col">
+<span class="text-[10px] text-outline opacity-70">TRAIN-ID</span>
+<span class="text-[#B1C5FF] border-b-2 border-[#B1C5FF]">IR-12845</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[10px] text-outline opacity-70">SPEED</span>
+<span class="text-[#434652]">72 KM/H</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[10px] text-outline opacity-70">MODE</span>
+<span class="text-[#434652]">AUTO-TACTICAL</span>
+</div>
+</nav>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined hover:bg-[#1C2A41] transition-colors duration-150 p-2">notifications_active</button>
+<button class="material-symbols-outlined hover:bg-[#1C2A41] transition-colors duration-150 p-2">settings</button>
+</div>
+</header>
+<main class="flex-1 grid grid-cols-12 gap-1 p-1 overflow-hidden">
+<!-- Left Panel: Systems & Telemetry (3 Cols) -->
+<aside class="col-span-3 flex flex-col gap-1 overflow-y-auto">
+<!-- System Health -->
+<section class="bg-surface-container-low p-4 flex flex-col gap-4">
+<div class="flex items-center justify-between border-b border-outline-variant/20 pb-2">
+<h2 class="font-headline text-xs font-bold tracking-widest text-primary uppercase">SYSTEM HEALTH</h2>
+<span class="material-symbols-outlined text-xs text-tertiary" style="font-variation-settings: 'FILL' 1;">monitor_heart</span>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between items-center bg-surface-container-high p-2">
+<span class="text-xs font-medium uppercase opacity-70">Camera Array</span>
+<span class="flex items-center gap-2 text-[10px] text-tertiary">
+<span class="w-1.5 h-1.5 bg-tertiary rounded-full animate-pulse"></span> NOMINAL
+                        </span>
+</div>
+<div class="flex justify-between items-center bg-surface-container-high p-2">
+<span class="text-xs font-medium uppercase opacity-70">AI Inference Engine</span>
+<span class="flex items-center gap-2 text-[10px] text-tertiary">
+<span class="w-1.5 h-1.5 bg-tertiary rounded-full animate-pulse"></span> ACTIVE
+                        </span>
+</div>
+<div class="flex justify-between items-center bg-surface-container-high p-2">
+<span class="text-xs font-medium uppercase opacity-70">Backend API</span>
+<span class="flex items-center gap-2 text-[10px] text-tertiary">
+<span class="w-1.5 h-1.5 bg-tertiary rounded-full animate-pulse"></span> SYNCED
+                        </span>
+</div>
+<div class="flex justify-between items-center bg-surface-container-high p-2">
+<span class="text-xs font-medium uppercase opacity-70">Database Node</span>
+<span class="flex items-center gap-2 text-[10px] text-tertiary">
+<span class="w-1.5 h-1.5 bg-tertiary rounded-full animate-pulse"></span> SECURE
+                        </span>
+</div>
+</div>
+</section>
+<!-- Weather Mode -->
+<section class="bg-surface-container-low p-4">
+<h2 class="font-headline text-xs font-bold tracking-widest text-primary uppercase mb-4">WEATHER ADAPTATION</h2>
+<div class="grid grid-cols-3 gap-1">
+<button class="bg-primary-container text-primary p-3 flex flex-col items-center gap-1 border border-primary/30">
+<span class="material-symbols-outlined text-lg">wb_sunny</span>
+<span class="text-[9px] font-bold">CLEAR</span>
+</button>
+<button class="bg-surface-container-high text-on-surface-variant p-3 flex flex-col items-center gap-1 hover:bg-surface-bright transition-colors">
+<span class="material-symbols-outlined text-lg">cloud</span>
+<span class="text-[9px] font-bold">FOG</span>
+</button>
+<button class="bg-surface-container-high text-on-surface-variant p-3 flex flex-col items-center gap-1 hover:bg-surface-bright transition-colors">
+<span class="material-symbols-outlined text-lg">dark_mode</span>
+<span class="text-[9px] font-bold">NIGHT</span>
+</button>
+</div>
+</section>
+<!-- GPS Telemetry -->
+<section class="bg-surface-container-low p-4 flex-1">
+<h2 class="font-headline text-xs font-bold tracking-widest text-primary uppercase mb-4">GPS TELEMETRY</h2>
+<div class="space-y-4 font-mono">
+<div>
+<span class="text-[10px] text-outline block mb-1">COORDINATES</span>
+<div class="bg-background p-2 border-l-2 border-primary">
+<p class="text-sm">LAT: 28.6139° N</p>
+<p class="text-sm">LONG: 77.2090° E</p>
+</div>
+</div>
+<div>
+<span class="text-[10px] text-outline block mb-1">TRACK SECTION ID</span>
+<p class="text-xl font-headline font-black text-secondary tracking-tighter">NCR-DL-204-X</p>
+</div>
+<div class="mt-4 opacity-30">
+<img alt="Radar Interface" class="w-full grayscale brightness-50 contrast-125" data-alt="abstract radar sweep display with grid lines and tactical map markers in dark blue and neon primary colors" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQgVS4MkuN6C60fbrdUkd_o_g7KcL2AXoV50kAks0oyGZSGcBjsw5thuhthMv-SO1M7vuIZstMA2QoH6Q12ypvzfc7UJBTPApe-nOBd326j_N-sQw5hZa4JYZB0bqc6NZCLhPbu8JDmWE66_Nrv2Z6AZEZbayY9A0cwiKiH_jV2TubFIBPV7KY1Mtjf22izpiMxPvYd8722meaNMWCaySkGleVZcerOdyt2I8uQFWpGS9_j2xxQ4WKieCXqzaVJeUzPcfnOw_NhIw"/>
+</div>
+</div>
+</section>
+</aside>
+<!-- Center Panel: Live Feed (6 Cols) -->
+<div class="col-span-6 flex flex-col gap-1">
+<div class="relative flex-1 bg-black overflow-hidden tactical-glow">
+<!-- Video Feed Placeholder -->
+<img alt="Live Track View" class="w-full h-full object-cover opacity-80" data-alt="cinematic first-person view of railway tracks from a train locomotive at dusk with motion blur on the sides and sharp central tracks" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDSen--K8zyTtSBYp0jDBcJDQ0lXt-F6MgUXdWSqeMOPQd16VfUKWb43wUikkYtBf7JKPZLxicEGGtobGbo04ut1IAPpwY--QqkMQPqDENXA_o34eBPgpxXDb6cT6UiAaKr5e9LxDJDvpJdwPOQrghzE_s5odWh8jrj4PsE_jIpn_kX7Ik3DIk-dXLuQbRuoSB2R2jmOCqyyew43nePe2DZM3JncSm7qqFjk9fSdgdvSAkfN-0fPXe-NcGJ1GO6EuvWFSNQDu-uZXI"/>
+<!-- AI Overlay Elements -->
+<div class="absolute inset-0 scanline pointer-events-none"></div>
+<!-- Bounding Box Example -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-64 border-2 border-error animate-pulse flex flex-col items-start">
+<div class="bg-error text-on-error text-[10px] font-bold px-2 py-0.5 uppercase">OBSTACLE: BOULDER</div>
+<div class="mt-auto w-full bg-error/20 text-error text-[10px] font-bold p-1 text-center backdrop-blur-sm">DIST: 230M</div>
+</div>
+<!-- Distance Markers -->
+<div class="absolute right-4 top-1/4 bottom-1/4 w-12 flex flex-col justify-between items-end border-r border-primary/40 text-[10px] text-primary/60 font-mono pr-2">
+<span>500M</span>
+<span>400M</span>
+<span class="text-error font-bold">300M</span>
+<span class="text-error font-bold underline">200M</span>
+<span>100M</span>
+<span>0M</span>
+</div>
+<!-- FPS & Quality -->
+<div class="absolute bottom-4 left-4 flex gap-4 text-[10px] font-mono text-tertiary bg-background/60 backdrop-blur px-3 py-1">
+<span>FPS: 60.2</span>
+<span>RES: 4K-RAW</span>
+<span>LATENCY: 12MS</span>
+</div>
+<!-- Reticle -->
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<div class="w-12 h-12 border border-primary/20 rounded-full flex items-center justify-center">
+<div class="w-1 h-1 bg-primary rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Panel: Alert System (3 Cols) -->
+<aside class="col-span-3 flex flex-col gap-1">
+<!-- Status Display -->
+<section class="bg-error-container p-6 flex flex-col items-center justify-center gap-4 flex-1">
+<span class="material-symbols-outlined text-6xl text-on-error-container animate-pulse" style="font-variation-settings: 'FILL' 1;">warning</span>
+<div class="text-center">
+<h2 class="font-headline text-5xl font-black tracking-tighter text-on-error-container">DANGER</h2>
+<p class="text-on-error-container text-xs font-bold tracking-[0.2em] mt-2 opacity-80 uppercase">IMMEDIATE ACTION REQUIRED</p>
+</div>
+</section>
+<!-- Detection Metrics -->
+<section class="bg-surface-container-low p-6 flex flex-col gap-6">
+<div class="space-y-4">
+<div>
+<span class="text-[10px] text-outline block mb-1 uppercase">Object classification</span>
+<div class="text-2xl font-headline font-bold text-on-surface">BOULDER / DEBRIS</div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div>
+<span class="text-[10px] text-outline block mb-1 uppercase">Distance</span>
+<div class="text-3xl font-mono font-bold text-error">230<span class="text-sm">m</span></div>
+</div>
+<div>
+<span class="text-[10px] text-outline block mb-1 uppercase">Confidence</span>
+<div class="text-3xl font-mono font-bold text-primary">91<span class="text-sm">%</span></div>
+</div>
+</div>
+</div>
+<div class="pt-6 border-t border-outline-variant/20 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-full bg-error/20 flex items-center justify-center border border-error/50">
+<span class="material-symbols-outlined text-error" style="font-variation-settings: 'FILL' 1;">volume_up</span>
+</div>
+<div>
+<span class="text-[10px] font-bold block">AUDIO ALERT</span>
+<span class="text-[10px] text-tertiary">ACTIVE - 110dB</span>
+</div>
+</div>
+<span class="text-[10px] font-mono text-outline">REF: #774-A</span>
+</div>
+</section>
+<!-- Operator Identity (Shared SideNav logic integration) -->
+<section class="bg-surface-container-highest p-4 flex items-center gap-4">
+<div class="w-10 h-10 bg-primary-container flex items-center justify-center overflow-hidden">
+<img alt="Operator Profile" class="w-full h-full object-cover" data-alt="portrait of a professional indian railway officer in uniform with focused expression, dark cinematic lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMJGNqbGwZUMdLdN0v-ZYVsEJzVRo3KiHg-HWHhm7a1B0CG2oFjwlN5ufpopzgvQoqT8Z4kaONHsHDPN7OWWnIKjMImU2_yC73sVwFT0W6v8-DMh3tNNQNZqvK6hIkMUvEe7Swll2eWPWyIhaQuqg03wUjSH2TEXSyt9ETY8q2we7Hm2LX3-v-wESVISge_5priR1_88AJxgLyj1d3rthrZzofyK9xJ_OwmSTjncMGF3Vix042P-zHUwCdja9U2z9FwTBH1ILM2NY"/>
+</div>
+<div>
+<h3 class="text-xs font-bold text-primary uppercase">COMMANDER</h3>
+<p class="text-[10px] text-outline uppercase">SECTOR-04 STATION</p>
+</div>
+</section>
+</aside>
+</main>
+<!-- Bottom Control Bar -->
+<footer class="bg-surface-container-low p-1 grid grid-cols-12 gap-1 border-t border-outline-variant/10">
+<div class="col-span-3 flex gap-1">
+<button class="flex-1 bg-tertiary-container text-on-tertiary-container font-headline font-bold text-xs py-4 uppercase tracking-widest hover:brightness-110 active:scale-95 transition-all">
+                Start Detection
+            </button>
+<button class="flex-1 bg-error-container text-on-error-container font-headline font-bold text-xs py-4 uppercase tracking-widest hover:brightness-110 active:scale-95 transition-all">
+                Stop System
+            </button>
+</div>
+<div class="col-span-6 flex items-center justify-center bg-background px-8">
+<div class="flex items-center gap-12 w-full max-w-2xl">
+<div class="flex-1">
+<span class="text-[10px] font-bold text-outline block mb-2 text-center uppercase">Alert Sensitivity</span>
+<div class="flex bg-surface-container-high p-1">
+<button class="flex-1 py-1 text-[9px] font-bold uppercase hover:bg-surface-bright transition-colors">Low</button>
+<button class="flex-1 py-1 text-[9px] font-bold uppercase bg-primary text-on-primary">Med</button>
+<button class="flex-1 py-1 text-[9px] font-bold uppercase hover:bg-surface-bright transition-colors">High</button>
+</div>
+</div>
+<div class="h-8 w-px bg-outline-variant/30"></div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<span class="text-[10px] font-bold text-outline uppercase">Sound</span>
+<div class="w-10 h-5 bg-tertiary/20 rounded-full relative p-1 cursor-pointer">
+<div class="absolute right-1 top-1 bottom-1 w-3 bg-tertiary rounded-full"></div>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-[10px] font-bold text-outline uppercase">Record</span>
+<div class="w-10 h-5 bg-outline-variant/20 rounded-full relative p-1 cursor-pointer">
+<div class="absolute left-1 top-1 bottom-1 w-3 bg-outline rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="col-span-3 flex gap-1">
+<div class="flex-1 flex flex-col justify-center items-center bg-surface-container-high px-4 font-mono text-[10px]">
+<span class="text-outline uppercase text-[8px]">Session Time</span>
+<span class="text-on-surface">04:22:15:88</span>
+</div>
+<button class="bg-surface-container-highest text-primary px-6 flex items-center gap-2 font-bold text-xs uppercase tracking-widest hover:bg-surface-bright transition-colors">
+<span class="material-symbols-outlined text-sm">history_edu</span>
+                LOGS
+            </button>
+</div>
+</footer>
+</body></html>

@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>IR-COMMANDER V1.0 | NIGHT OPS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .thermal-gradient {
+            background: linear-gradient(135deg, rgba(75, 0, 130, 0.4) 0%, rgba(0, 255, 255, 0.2) 100%);
+        }
+        .danger-pulse {
+            box-shadow: inset 0 0 20px rgba(147, 0, 10, 0.8);
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #041329;
+            color: #d6e3ff;
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "outline-variant": "#434652",
+              "on-tertiary": "#00390a",
+              "background": "#041329",
+              "surface": "#041329",
+              "surface-container-lowest": "#010e24",
+              "secondary-fixed-dim": "#b5c7ed",
+              "on-tertiary-fixed-variant": "#005312",
+              "secondary-container": "#354767",
+              "on-background": "#d6e3ff",
+              "primary": "#b1c5ff",
+              "on-secondary-container": "#a3b5db",
+              "on-primary": "#002c71",
+              "primary-fixed": "#dae2ff",
+              "inverse-surface": "#d6e3ff",
+              "inverse-primary": "#345baf",
+              "on-tertiary-fixed": "#002204",
+              "on-primary-container": "#8dadff",
+              "secondary-fixed": "#d7e3ff",
+              "surface-variant": "#27354c",
+              "outline": "#8e909d",
+              "on-surface-variant": "#c4c6d3",
+              "on-surface": "#d6e3ff",
+              "inverse-on-surface": "#233148",
+              "primary-fixed-dim": "#b1c5ff",
+              "secondary": "#b5c7ed",
+              "on-tertiary-container": "#6bc269",
+              "surface-container-low": "#0d1c32",
+              "error-container": "#93000a",
+              "on-error-container": "#ffdad6",
+              "tertiary-fixed": "#9df898",
+              "on-secondary": "#1e304f",
+              "on-error": "#690005",
+              "surface-container-high": "#1c2a41",
+              "on-secondary-fixed-variant": "#354767",
+              "on-primary-fixed": "#001947",
+              "surface-container": "#112036",
+              "on-primary-fixed-variant": "#144296",
+              "surface-container-highest": "#27354c",
+              "tertiary": "#82db7e",
+              "primary-container": "#0b3d91",
+              "tertiary-container": "#004e11",
+              "surface-bright": "#2c3951",
+              "surface-tint": "#b1c5ff",
+              "surface-dim": "#041329",
+              "on-secondary-fixed": "#061b39",
+              "tertiary-fixed-dim": "#82db7e",
+              "error": "#ffb4ab"
+            },
+            fontFamily: {
+              "headline": ["Space Grotesk"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+</head>
+<body class="bg-surface text-on-surface h-screen flex flex-col">
+<!-- Top Navigation Bar -->
+<header class="flex justify-between items-center px-6 w-full z-50 bg-[#041329] fixed top-0 h-16 border-b-0">
+<div class="flex items-center gap-8">
+<span class="text-xl font-black text-[#B1C5FF] tracking-tighter font-headline">IR-COMMANDER V1.0</span>
+<nav class="hidden md:flex gap-6">
+<a class="font-headline font-bold uppercase tracking-wider text-sm text-[#B1C5FF] border-b-2 border-[#B1C5FF] pb-1" href="#">TELEMETRY</a>
+<a class="font-headline font-bold uppercase tracking-wider text-sm text-[#434652] hover:bg-[#1C2A41] transition-colors duration-150" href="#">TRACTION</a>
+<a class="font-headline font-bold uppercase tracking-wider text-sm text-[#434652] hover:bg-[#1C2A41] transition-colors duration-150" href="#">BRAKING</a>
+<a class="font-headline font-bold uppercase tracking-wider text-sm text-[#434652] hover:bg-[#1C2A41] transition-colors duration-150" href="#">VIGILANCE</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex gap-2 mr-4">
+<button class="material-symbols-outlined text-[#B1C5FF] p-2 hover:bg-[#1C2A41] transition-all">settings</button>
+<button class="material-symbols-outlined text-[#B1C5FF] p-2 hover:bg-[#1C2A41] transition-all">notifications_active</button>
+</div>
+<div class="flex flex-col items-end mr-3">
+<span class="font-headline font-bold text-xs text-[#B1C5FF]">PILOT ID 7724</span>
+<span class="font-mono text-[10px] text-outline">STATUS: NOMINAL</span>
+</div>
+<div class="w-10 h-10 bg-surface-container-highest border border-outline-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">account_circle</span>
+</div>
+</div>
+</header>
+<!-- Side Navigation Bar -->
+<aside class="fixed left-0 top-16 h-[calc(100vh-64px)] w-24 bg-[#0D1C32] flex flex-col items-center py-4 space-y-2 z-40 tonal-nesting">
+<div class="mb-6 flex flex-col items-center">
+<span class="font-headline font-black text-lg text-[#B1C5FF]">LOCO-8821</span>
+<span class="font-headline font-bold uppercase text-[8px] text-outline">ZONE: NR-DLH</span>
+</div>
+<nav class="flex-1 w-full space-y-2">
+<div class="text-[#434652] py-4 flex flex-col items-center justify-center hover:bg-[#1C2A41] hover:text-[#B1C5FF] cursor-pointer">
+<span class="material-symbols-outlined mb-1" data-icon="analytics">analytics</span>
+<span class="font-headline font-bold uppercase text-[9px]">Diagnostics</span>
+</div>
+<div class="bg-[#1C2A41] text-[#B1C5FF] border-l-4 border-[#B1C5FF] w-full py-4 flex flex-col items-center justify-center cursor-pointer">
+<span class="material-symbols-outlined mb-1" data-icon="cloud">cloud</span>
+<span class="font-headline font-bold uppercase text-[9px]">Weather</span>
+</div>
+<div class="text-[#434652] py-4 flex flex-col items-center justify-center hover:bg-[#1C2A41] hover:text-[#B1C5FF] cursor-pointer">
+<span class="material-symbols-outlined mb-1" data-icon="visibility">visibility</span>
+<span class="font-headline font-bold uppercase text-[9px]">Track View</span>
+</div>
+<div class="text-[#434652] py-4 flex flex-col items-center justify-center hover:bg-[#1C2A41] hover:text-[#B1C5FF] cursor-pointer">
+<span class="material-symbols-outlined mb-1" data-icon="thermostat">thermostat</span>
+<span class="font-headline font-bold uppercase text-[9px]">Thermal</span>
+</div>
+<div class="text-[#434652] py-4 flex flex-col items-center justify-center hover:bg-[#1C2A41] hover:text-[#B1C5FF] cursor-pointer">
+<span class="material-symbols-outlined mb-1" data-icon="router">router</span>
+<span class="font-headline font-bold uppercase text-[9px]">Network</span>
+</div>
+</nav>
+<div class="mt-auto w-full flex flex-col items-center gap-4">
+<button class="bg-error-container text-on-error-container font-headline font-bold text-[10px] py-3 px-2 w-11/12 leading-tight text-center">EMERGENCY STOP</button>
+<div class="text-[#434652] py-4 flex flex-col items-center justify-center hover:bg-[#1C2A41] hover:text-[#B1C5FF] cursor-pointer w-full">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="font-headline font-bold uppercase text-[9px]">Log Out</span>
+</div>
+</div>
+</aside>
+<!-- Main Dashboard Content -->
+<main class="ml-24 mt-16 p-4 flex-1 grid grid-cols-12 gap-4 overflow-hidden bg-background">
+<!-- Left Column: System Health & Weather -->
+<section class="col-span-3 flex flex-col gap-4 overflow-y-auto">
+<div class="bg-surface-container-low p-4">
+<h3 class="font-headline font-bold uppercase text-xs text-primary mb-4 tracking-widest">NIGHT WEATHER FEED</h3>
+<div class="space-y-4">
+<div class="flex justify-between items-end border-b border-outline-variant/20 pb-2">
+<div>
+<p class="text-[10px] text-on-surface-variant font-headline font-bold uppercase">Visibility</p>
+<p class="font-mono text-xl text-on-surface">1.2 KM</p>
+</div>
+<span class="material-symbols-outlined text-tertiary">partly_cloudy_night</span>
+</div>
+<div class="flex justify-between items-end border-b border-outline-variant/20 pb-2">
+<div>
+<p class="text-[10px] text-on-surface-variant font-headline font-bold uppercase">Track Temp</p>
+<p class="font-mono text-xl text-on-surface">4.2°C</p>
+</div>
+<span class="material-symbols-outlined text-[#B1C5FF]">device_thermostat</span>
+</div>
+<div class="flex justify-between items-end border-b border-outline-variant/20 pb-2">
+<div>
+<p class="text-[10px] text-on-surface-variant font-headline font-bold uppercase">Precipitation</p>
+<p class="font-mono text-xl text-on-surface">LOW (2%)</p>
+</div>
+<span class="material-symbols-outlined text-[#B1C5FF]">water_drop</span>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-low p-4 flex-1">
+<h3 class="font-headline font-bold uppercase text-xs text-primary mb-4 tracking-widest">SUB-SYSTEMS</h3>
+<div class="space-y-2">
+<div class="flex items-center gap-3 bg-surface-container-high p-3">
+<span class="material-symbols-outlined text-tertiary">sensors</span>
+<div class="flex-1">
+<p class="text-[10px] font-headline font-bold uppercase">LIDAR-7 Rangefinder</p>
+<div class="w-full bg-surface-container-lowest h-1 mt-1">
+<div class="bg-tertiary h-full w-[94%]"></div>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-3 bg-surface-container-high p-3">
+<span class="material-symbols-outlined text-tertiary">network_check</span>
+<div class="flex-1">
+<p class="text-[10px] font-headline font-bold uppercase">Sat-Link Uplink</p>
+<div class="w-full bg-surface-container-lowest h-1 mt-1">
+<div class="bg-tertiary h-full w-[88%]"></div>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-3 bg-surface-container-high p-3 opacity-60">
+<span class="material-symbols-outlined text-error">warning</span>
+<div class="flex-1">
+<p class="text-[10px] font-headline font-bold uppercase text-error">Aux Hydraulic Tank 2</p>
+<div class="w-full bg-surface-container-lowest h-1 mt-1">
+<div class="bg-error h-full w-[12%]"></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="bg-surface-container-low p-4 mt-4">
+<h3 class="font-headline font-bold uppercase text-xs text-primary mb-4 tracking-widest">EXTERNAL CONTROLS</h3>
+<div class="space-y-4">
+<div class="flex items-center justify-between bg-surface-container-high p-3 border border-outline-variant/30">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[#B1C5FF]">highlight</span>
+<span class="text-[10px] font-headline font-bold uppercase">Manual Track Light</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox" value=""/>
+<div class="w-12 h-6 bg-[#434652] peer-focus:outline-none rounded-none border border-outline-variant peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-[#041329] after:border-outline-variant after:border after:h-5 after:w-5 after:transition-all peer-checked:bg-[#B1C5FF] shadow-[inset_0_2px_4px_rgba(0,0,0,0.5)]"></div>
+<span class="ml-2 text-[8px] font-mono font-bold text-outline peer-checked:text-[#B1C5FF]">OFF / ON</span>
+</label>
+</div>
+</div>
+</div>
+</section>
+<!-- Center Column: Thermal Track View -->
+<section class="col-span-6 flex flex-col relative border border-outline-variant/30">
+<div class="absolute top-4 left-4 z-10 flex items-center gap-3">
+<div class="bg-error px-2 py-0.5 animate-pulse">
+<span class="text-[10px] font-headline font-black text-on-error uppercase">REC ● AI ACTIVE</span>
+</div>
+<div class="bg-surface-container-highest/80 backdrop-blur px-3 py-0.5 border border-outline-variant/50">
+<span class="text-[10px] font-mono text-primary uppercase">INFRARED MODE / 0.7μm - 14μm</span>
+</div><div class="flex items-center gap-3 bg-surface-container-highest/80 backdrop-blur px-3 py-0.5 border border-outline-variant/50">
+<span class="text-[9px] font-headline font-bold text-outline uppercase mr-2">THERMAL VIEW</span>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-8 h-4 bg-[#434652] peer-focus:outline-none rounded-none border border-outline-variant peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[1px] after:left-[1px] after:bg-[#041329] after:border-outline-variant after:border after:h-[12px] after:w-[13px] after:transition-all peer-checked:bg-tertiary shadow-[inset_0_1px_2px_rgba(0,0,0,0.5)]"></div>
+<span class="ml-2 text-[8px] font-mono font-bold text-outline peer-checked:text-tertiary">OFF / ON</span>
+</label>
+</div>
+</div>
+<div class="flex-1 bg-black overflow-hidden relative thermal-gradient">
+<img alt="Railway tracks at night" class="absolute inset-0 w-full h-full object-cover opacity-40 mix-blend-screen grayscale" data-alt="Monochrome railway tracks vanishing into dark horizon with high contrast highlights and dark shadows for thermal overlay effect" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5-6DoxORtCvRX2W1DhlqEan-pdSAsWcUn0sTfFYeqG7UokipcavXXrK2rMITBvVdFCX7yzweNKPl8HSTqAFu_bg5ieszyhQ7c7H8mqtR85a6jHULsSM8lqHvj7XuxsejWYkDyqDuvhC158wM3X2P4yPaGntfTsHRGkXJlsClypJ_C_jzQnfvBsRUfQfq3m5iu_p1iGTXunkVv30d4tibvw_NpslLch5343GiN-CLSbCQGt7SRBNUG8fvTfJbDwTX3hWlnH-j20M0"/>
+<!-- AI Detection Overlay -->
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="w-48 h-48 border-2 border-error relative danger-pulse">
+<div class="absolute -top-6 left-0 bg-error px-2 text-[10px] font-headline font-black text-on-error uppercase">OBSTACLE: ANIMAL</div>
+<div class="absolute top-0 right-0 p-1">
+<span class="text-[10px] font-mono text-error font-bold">150.4m</span>
+</div>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-error text-6xl opacity-50" style="font-variation-settings: 'FILL' 1;">pets</span>
+</div>
+<!-- Bounding corner markers -->
+<div class="absolute -top-1 -left-1 w-4 h-4 border-t-4 border-l-4 border-error"></div>
+<div class="absolute -top-1 -right-1 w-4 h-4 border-t-4 border-r-4 border-error"></div>
+<div class="absolute -bottom-1 -left-1 w-4 h-4 border-b-4 border-l-4 border-error"></div>
+<div class="absolute -bottom-1 -right-1 w-4 h-4 border-b-4 border-r-4 border-error"></div>
+</div>
+</div>
+<!-- Heads Up Display Elements -->
+<div class="absolute bottom-6 left-6 right-6 flex justify-between items-end">
+<div class="space-y-1">
+<p class="text-[10px] font-headline font-bold text-outline">AUTO BRAKE ARMED</p>
+<div class="flex gap-1">
+<div class="w-6 h-1 bg-tertiary"></div>
+<div class="w-6 h-1 bg-tertiary"></div>
+<div class="w-6 h-1 bg-tertiary"></div>
+<div class="w-6 h-1 bg-outline-variant"></div>
+</div>
+</div>
+<div class="text-right">
+<p class="text-6xl font-headline font-black text-[#B1C5FF] tracking-tighter">84 <span class="text-xl">KM/H</span></p>
+</div>
+</div>
+</div>
+<!-- Contextual Navigation for Center Focus -->
+<div class="bg-surface-container-high h-16 flex items-center justify-between px-6 border-t border-outline-variant/30">
+<div class="flex gap-8">
+<div class="flex flex-col">
+<span class="text-[9px] font-headline font-bold text-outline uppercase">AI CONFIDENCE</span>
+<span class="font-mono text-sm text-tertiary">98.2%</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[9px] font-headline font-bold text-outline uppercase">TIME TO IMPACT</span>
+<span class="font-mono text-sm text-error">06.4s</span>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="bg-primary-container text-on-primary-container px-6 py-2 font-headline font-bold text-xs uppercase hover:bg-primary hover:text-on-primary transition-all">MANUAL OVERRIDE</button>
+<button class="bg-error-container text-on-error-container px-6 py-2 font-headline font-bold text-xs uppercase hover:bg-error hover:text-on-error transition-all">INITIATE EMERGENCY BRAKE</button>
+</div>
+</div>
+</section>
+<!-- Right Column: Active Danger Alert -->
+<section class="col-span-3 flex flex-col gap-4">
+<div class="bg-error-container/20 p-4 border-l-4 border-error h-full flex flex-col">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-error text-3xl">report</span>
+<div>
+<h2 class="text-error font-headline font-black text-xl leading-none">DANGER</h2>
+<p class="text-[10px] font-headline font-bold text-error/80 uppercase">Collision Imminent</p>
+</div>
+</div>
+<div class="flex-1 space-y-6">
+<div class="bg-surface-container-highest p-4 border border-error/30">
+<h4 class="text-[10px] font-headline font-bold text-[#B1C5FF] uppercase mb-2">Object Analysis</h4>
+<p class="text-xs text-on-surface leading-relaxed">AI identifies a large bovine directly on track path. High thermal signature detected. Movement predicted: STAGNANT.</p>
+</div>
+<div class="space-y-4">
+<h4 class="text-[10px] font-headline font-bold text-[#B1C5FF] uppercase border-b border-outline-variant pb-1">Automated Protocol</h4>
+<div class="flex justify-between items-center">
+<span class="text-[11px] font-headline text-on-surface-variant">Horn Blast (Auto)</span>
+<span class="text-[11px] font-mono text-tertiary">EXECUTING</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-[11px] font-headline text-on-surface-variant">Headlights Max</span>
+<span class="text-[11px] font-mono text-tertiary">ACTIVE</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-[11px] font-headline text-on-surface-variant">Sand Applicator</span>
+<span class="text-[11px] font-mono text-outline">READY</span>
+</div>
+</div>
+</div>
+<div class="mt-auto pt-6">
+<button class="w-full bg-[#1C2A41] text-primary border border-primary/30 py-3 font-headline font-bold text-xs uppercase flex items-center justify-center gap-2 hover:bg-primary/10 transition-all">
+<span class="material-symbols-outlined text-sm">mic</span>
+                        DECLARE EXTERNAL EMERGENCY
+                    </button>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Control Bar -->
+<footer class="h-20 bg-surface-container-low px-8 flex items-center justify-between border-t border-outline-variant/20 z-50">
+<div class="flex items-center gap-12">
+<div class="flex flex-col">
+<label class="text-[9px] font-headline font-bold text-outline uppercase mb-1">AI SENSITIVITY</label>
+<div class="flex items-center gap-4">
+<input class="w-32 accent-primary" type="range" value="85"/>
+<span class="font-mono text-xs text-on-surface">0.85</span>
+</div>
+</div>
+<div class="flex flex-col">
+<label class="text-[9px] font-headline font-bold text-outline uppercase mb-1">ALARM VOLUME</label>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-outline text-lg">volume_up</span>
+<div class="flex gap-1">
+<div class="w-2 h-4 bg-primary"></div>
+<div class="w-2 h-4 bg-primary"></div>
+<div class="w-2 h-4 bg-primary"></div>
+<div class="w-2 h-4 bg-primary"></div>
+<div class="w-2 h-4 bg-outline-variant"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="bg-surface-container-highest px-4 py-2 border border-outline-variant flex flex-col items-center min-w-[100px]">
+<span class="text-[9px] font-headline font-bold text-outline">LATENCY</span>
+<span class="font-mono text-sm text-tertiary">14ms</span>
+</div>
+<div class="bg-surface-container-highest px-4 py-2 border border-outline-variant flex flex-col items-center min-w-[100px]">
+<span class="text-[9px] font-headline font-bold text-outline">CPU TEMP</span>
+<span class="font-mono text-sm text-on-surface">52°C</span>
+</div>
+<div class="bg-surface-container-highest px-4 py-2 border border-outline-variant flex flex-col items-center min-w-[100px]">
+<span class="text-[9px] font-headline font-bold text-outline">PWR LOAD</span>
+<span class="font-mono text-sm text-on-surface">64%</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="text-right">
+<p class="font-headline font-bold text-xs">UTC 21:42:08</p>
+<p class="text-[9px] font-mono text-outline">STATION DIST: 12.4KM</p>
+</div>
+<button class="bg-[#1C2A41] p-2 hover:bg-primary/20 transition-all">
+<span class="material-symbols-outlined text-primary">fullscreen</span>
+</button>
+</div>
+</footer>
+</body></html>
