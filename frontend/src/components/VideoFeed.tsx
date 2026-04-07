@@ -11,9 +11,10 @@ interface Detection {
 
 interface VideoFeedProps {
   detections: Detection[];
+  speed: number;
 }
 
-const VideoFeed: React.FC<VideoFeedProps> = ({ detections = [] }) => {
+const VideoFeed: React.FC<VideoFeedProps> = ({ detections = [], speed }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -86,7 +87,7 @@ const VideoFeed: React.FC<VideoFeedProps> = ({ detections = [] }) => {
       {/* Speed Overlay */}
       <div className="absolute bottom-6 right-6 text-right pointer-events-none">
          <p className="text-5xl font-headline font-black text-primary tracking-tighter italic leading-none">
-            84 <span className="text-lg not-italic opacity-40">KM/H</span>
+            {speed} <span className="text-lg not-italic opacity-40">KM/H</span>
          </p>
       </div>
     </div>

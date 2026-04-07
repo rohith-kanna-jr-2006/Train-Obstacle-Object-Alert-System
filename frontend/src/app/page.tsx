@@ -23,15 +23,17 @@ interface Detection {
 
 export default function Home() {
   const [isActive, setIsActive] = useState(false);
+  const [systemActive, setSystemActive] = useState(true);
   const [detection, setDetection] = useState<Detection | null>(null);
   const [startupProgress, setStartupProgress] = useState(0);
+  const [speed, setSpeed] = useState(72);
 
   // Simulation logic...
   useEffect(() => {
     let interval: NodeJS.Timeout;
-    if (isActive) {
+    if (isActive && systemActive) {
       interval = setInterval(() => {
-        const hasDetection = Math.random() > 0.7;
+        const hasDetection = Math.random() > 0.85;
         if (hasDetection) {
           setDetection({
             id: Math.random().toString(36).substr(2, 9),
@@ -43,10 +45,17 @@ export default function Home() {
         } else {
           setDetection(null);
         }
+
+        // Simulating speed fluctuation
+        setSpeed(prev => {
+          const mod = Math.random() > 0.5 ? 1 : -1;
+          const newSpeed = prev + (Math.random() * 2 * mod);
+          return Math.min(Math.max(newSpeed, 65), 85);
+        });
       }, 3000);
     }
     return () => clearInterval(interval);
-  }, [isActive]);
+  }, [isActive, systemActive]);
 
   const handleStart = () => {
     let progress = 0;
@@ -66,22 +75,26 @@ export default function Home() {
 
   return (
     <div className="h-screen bg-[#041329] text-[#d6e3ff] font-body overflow-hidden flex flex-col">
-      <AudioAlert status={(detection && detection.distance < 300) ? "DANGER" : "SAFE"} />
+      <AudioAlert status={(detection && detection.distance < 300 && systemActive) ? "DANGER" : "SAFE"} />
       
-      <Header />
+      <Header trainId="IR-12845" speed={Math.floor(speed)} />
 
       <main className="flex-1 grid grid-cols-12 gap-1 p-1 overflow-hidden">
         {/* Left Panel: Systems & Telemetry (3 Cols) */}
         <SystemStatus />
 
-        {/* Center Panel: Live Feed (6 Cols) - VideoFeed component */}
-        <VideoFeed detections={detection ? [detection] : []} />
+        {/* Center Panel: Live Feed (6 Cols) */}
+        <VideoFeed detections={(detection && systemActive) ? [detection] : []} speed={Math.floor(speed)} />
 
-        {/* Right Panel: Alert System (3 Cols) - AlertPanel component */}
-        <AlertPanel detection={detection} />
+        {/* Right Panel: Alert System (3 Cols) */}
+        <AlertPanel detection={systemActive ? detection : null} />
       </main>
 
-      <ControlPanel />
+      <ControlPanel 
+        systemActive={systemActive} 
+        onStart={() => setSystemActive(true)} 
+        onStop={() => setSystemActive(false)} 
+      />
     </div>
   );
 }
