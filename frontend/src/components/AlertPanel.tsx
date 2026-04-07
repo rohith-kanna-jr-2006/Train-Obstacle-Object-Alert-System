@@ -8,23 +8,27 @@ interface Detection {
 }
 
 interface AlertPanelProps {
-    detection: Detection | null;
+  detection: Detection | null;
+  level: number;
 }
 
-const AlertPanel: React.FC<AlertPanelProps> = ({ detection = null }) => {
+const AlertPanel: React.FC<AlertPanelProps> = ({ detection = null, level: alertLevel }) => {
+  const levelText = ["SECURE", "CAUTION", "WARNING", "CRITICAL"][alertLevel];
+  const levelColor = ["text-tertiary", "text-secondary", "text-error", "text-error animate-pulse"][alertLevel];
+
   return (
     <aside className="col-span-3 flex flex-col gap-1 h-full overflow-hidden">
       {/* Status Display */}
-      <section className={`${detection ? 'bg-error-container' : 'bg-surface-container-low'} p-6 flex flex-col items-center justify-center gap-4 flex-1 transition-colors duration-500`}>
-        <span className={`material-symbols-outlined text-6xl ${detection ? 'text-on-error-container animate-pulse' : 'text-primary/20'}`} style={{ fontVariationSettings: "'FILL' 1" }}>
-          {detection ? 'warning' : 'shield'}
+      <section className={`${alertLevel >= 2 ? 'bg-error-container' : 'bg-surface-container-low'} p-6 flex flex-col items-center justify-center gap-4 flex-1 transition-colors duration-500`}>
+        <span className={`material-symbols-outlined text-6xl ${alertLevel >= 2 ? 'text-on-error-container animate-pulse' : 'text-primary/20'}`} style={{ fontVariationSettings: "'FILL' 1" }}>
+          {alertLevel >= 2 ? 'warning' : 'shield_with_heart'}
         </span>
         <div className="text-center">
-          <h2 className={`font-headline text-5xl font-black tracking-tighter ${detection ? 'text-on-error-container' : 'text-primary-container opacity-20'}`}>
-            {detection ? 'DANGER' : 'SECURE'}
+          <h2 className={`font-headline text-5xl font-black tracking-tighter ${alertLevel >= 2 ? 'text-on-error-container' : 'text-primary-container opacity-20'}`}>
+            {alertLevel >= 2 ? 'DANGER' : 'SECURE'}
           </h2>
-          <p className={`${detection ? 'text-on-error-container' : 'text-primary/20'} text-xs font-bold tracking-[0.2em] mt-2 opacity-80 uppercase`}>
-            {detection ? 'IMMEDIATE ACTION REQUIRED' : 'CLEAR TRACK SCANNING'}
+          <p className={`${alertLevel >= 2 ? 'text-on-error-container' : 'text-primary/20'} text-[10px] font-bold tracking-[0.2em] mt-2 opacity-80 uppercase`}>
+            {alertLevel >= 3 ? 'IMMEDIATE IMPACT RISK' : alertLevel === 2 ? 'OBSTACLE ON TRACK' : 'CLEAR TRACK SCANNING'}
           </p>
         </div>
       </section>
@@ -32,16 +36,24 @@ const AlertPanel: React.FC<AlertPanelProps> = ({ detection = null }) => {
       {/* Detection Metrics */}
       <section className="bg-surface-container-low p-6 flex flex-col gap-6">
         <div className="space-y-4">
-          <div>
-            <span className="text-[10px] text-outline block mb-1 uppercase tracking-widest">Object classification</span>
-            <div className="text-2xl font-headline font-bold text-on-surface uppercase tracking-tight italic">
-              {detection ? `${detection.object} / OBSTACLE` : 'NO TARGET DETECTED'}
+          <div className="flex justify-between items-start">
+            <div>
+              <span className="text-[10px] text-outline block mb-1 uppercase tracking-widest">Object</span>
+              <div className="text-2xl font-headline font-bold text-on-surface uppercase tracking-tight italic">
+                {detection ? detection.object : 'NONE'}
+              </div>
+            </div>
+            <div className="text-right">
+              <span className="text-[10px] text-outline block mb-1 uppercase tracking-widest">Alert Level</span>
+              <div className={`text-xl font-headline font-black uppercase tracking-widest ${levelColor}`}>
+                LVL {alertLevel}: {levelText}
+              </div>
             </div>
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <span className="text-[10px] text-outline block mb-1 uppercase tracking-widest">Distance</span>
-              <div className={`text-3xl font-headline font-black ${detection ? 'text-error' : 'text-primary/20'}`}>
+              <span className="text-[10px] text-outline block mb-1 uppercase tracking-widest uppercase">Distance</span>
+              <div className={`text-3xl font-headline font-black ${alertLevel >= 2 ? 'text-error' : 'text-primary/40'}`}>
                 {detection ? detection.distance : '---'}<span className="text-sm ml-1 font-bold">m</span>
               </div>
             </div>

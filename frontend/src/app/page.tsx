@@ -69,13 +69,15 @@ export default function Home() {
     }, 50);
   };
 
+  const alertLevel = (!detection || !systemActive) ? 0 : detection.distance < 150 ? 3 : detection.distance < 300 ? 2 : 1;
+
   if (!isActive) {
     return <SetupScreen startupProgress={startupProgress} onStart={handleStart} />;
   }
 
   return (
     <div className="h-screen bg-[#041329] text-[#d6e3ff] font-body overflow-hidden flex flex-col">
-      <AudioAlert status={(detection && detection.distance < 300 && systemActive) ? "DANGER" : "SAFE"} />
+      <AudioAlert level={alertLevel} />
       
       <Header trainId="IR-12845" speed={Math.floor(speed)} />
 
@@ -87,7 +89,7 @@ export default function Home() {
         <VideoFeed detections={(detection && systemActive) ? [detection] : []} speed={Math.floor(speed)} />
 
         {/* Right Panel: Alert System (3 Cols) */}
-        <AlertPanel detection={systemActive ? detection : null} />
+        <AlertPanel level={alertLevel} detection={systemActive ? detection : null} />
       </main>
 
       <ControlPanel 
