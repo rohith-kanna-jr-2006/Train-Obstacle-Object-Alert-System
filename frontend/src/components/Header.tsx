@@ -2,33 +2,29 @@ import React from "react";
 
 const Header: React.FC = () => {
   return (
-    <header className="h-16 flex justify-between items-center px-6 z-50 bg-[#041329] border-b border-outline-variant/10">
-      <div className="flex items-center gap-8">
-        <span className="text-xl font-black text-primary tracking-tighter font-headline italic">IR-COMMANDER V1.0</span>
-        <nav className="hidden md:flex gap-6">
-          {['Telemetry', 'Traction', 'Braking', 'Vigilance'].map((item, idx) => (
-            <a 
-              key={item} 
-              className={`font-headline font-bold uppercase tracking-wider text-[10px] ${idx === 0 ? 'text-primary border-b-2 border-primary pb-1' : 'text-outline hover:text-on-surface'}`} 
-              href="#"
-            >
-              {item}
-            </a>
-          ))}
-        </nav>
-      </div>
+    <header className="bg-[#041329] text-[#B1C5FF] font-headline font-bold uppercase tracking-tighter flex justify-between items-center w-full px-6 py-4 border-b-0">
       <div className="flex items-center gap-4">
-        <div className="flex gap-2 mr-4">
-          <button className="material-symbols-outlined text-primary p-2 hover:bg-surface-container-highest transition-all">settings</button>
-          <button className="material-symbols-outlined text-primary p-2 hover:bg-surface-container-highest transition-all">notifications_active</button>
+        <span className="text-xl font-black text-[#B1C5FF] italic">RAIL-AI SENTINEL</span>
+        <div className="h-6 w-px bg-outline-variant/30"></div>
+        <h1 className="text-sm tracking-widest opacity-80">INDIAN RAILWAYS – OBSTACLE ALERT SYSTEM</h1>
+      </div>
+      <nav className="hidden md:flex items-center gap-8 text-xs">
+        <div className="flex flex-col">
+          <span className="text-[10px] text-outline opacity-70">TRAIN-ID</span>
+          <span className="text-[#B1C5FF] border-b-2 border-[#B1C5FF]">IR-12845</span>
         </div>
-        <div className="flex flex-col items-end mr-3">
-          <span className="font-headline font-bold text-[10px] text-primary">PILOT ID 7724</span>
-          <span className="font-mono text-[9px] text-outline">STATUS: NOMINAL</span>
+        <div className="flex flex-col">
+          <span className="text-[10px] text-outline opacity-70">SPEED</span>
+          <span className="text-[#434652]">72 KM/H</span>
         </div>
-        <div className="w-10 h-10 bg-surface-container-highest border border-outline-variant flex items-center justify-center">
-          <span className="material-symbols-outlined text-primary">account_circle</span>
+        <div className="flex flex-col">
+          <span className="text-[10px] text-outline opacity-70">MODE</span>
+          <span className="text-[#434652]">AUTO-TACTICAL</span>
         </div>
+      </nav>
+      <div className="flex items-center gap-4">
+        <button className="material-symbols-outlined hover:bg-[#1C2A41] transition-colors duration-150 p-2">notifications_active</button>
+        <button className="material-symbols-outlined hover:bg-[#1C2A41] transition-colors duration-150 p-2">settings</button>
       </div>
     </header>
   );

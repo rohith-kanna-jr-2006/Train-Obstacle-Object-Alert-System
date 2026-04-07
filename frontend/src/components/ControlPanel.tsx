@@ -2,51 +2,52 @@ import React from "react";
 
 const ControlPanel: React.FC = () => {
   return (
-    <footer className="h-24 bg-surface-container-low px-8 flex items-center justify-between border-t border-outline-variant/10 z-50">
-      <div className="flex items-center gap-12">
-        <div className="flex flex-col">
-          <label className="text-[9px] font-headline font-black text-outline uppercase mb-2 tracking-[0.2em] opacity-80">AI Sensitivity</label>
-          <div className="flex items-center gap-4">
-            <input className="w-40 accent-primary h-1 bg-surface-container-highest appearance-none cursor-pointer" type="range" defaultValue={85}/>
-            <span className="font-mono text-xs text-primary font-bold">0.85</span>
+    <footer className="bg-surface-container-low p-1 grid grid-cols-12 gap-1 border-t border-outline-variant/10">
+      <div className="col-span-3 flex gap-1">
+        <button className="flex-1 bg-tertiary-container text-on-tertiary-container font-headline font-bold text-xs py-4 uppercase tracking-widest hover:brightness-110 active:scale-95 transition-all">
+          Start Detection
+        </button>
+        <button className="flex-1 bg-error-container text-on-error-container font-headline font-bold text-xs py-4 uppercase tracking-widest hover:brightness-110 active:scale-95 transition-all">
+          Stop System
+        </button>
+      </div>
+
+      <div className="col-span-6 flex items-center justify-center bg-background px-8 border-x border-outline-variant/10">
+        <div className="flex items-center gap-12 w-full max-w-2xl">
+          <div className="flex-1">
+            <span className="text-[10px] font-bold text-outline block mb-2 text-center uppercase tracking-widest">Alert Sensitivity</span>
+            <div className="flex bg-surface-container-high p-1">
+              <button className="flex-1 py-1 text-[9px] font-bold uppercase hover:bg-surface-bright transition-colors text-outline">Low</button>
+              <button className="flex-1 py-1 text-[9px] font-bold uppercase bg-primary text-on-primary shadow-[0_0_10px_rgba(177,197,255,0.4)]">Med</button>
+              <button className="flex-1 py-1 text-[9px] font-bold uppercase hover:bg-surface-bright transition-colors text-outline">High</button>
+            </div>
           </div>
-        </div>
-        <div className="h-10 w-px bg-outline-variant/10"></div>
-        <div className="flex flex-col">
-          <label className="text-[9px] font-headline font-black text-outline uppercase mb-2 tracking-[0.2em] opacity-80">Alarm Volume</label>
-          <div className="flex items-center gap-4">
-            <span className="material-symbols-outlined text-outline text-lg">volume_up</span>
-            <div className="flex gap-1.5">
-              {[1, 2, 3, 4].map(i => <div key={i} className="w-2.5 h-4 bg-primary shadow-[0_0_5px_rgba(177,197,255,0.4)]"></div>)}
-              <div className="w-2.5 h-4 bg-surface-container-highest opacity-50"></div>
+          <div className="h-8 w-px bg-outline-variant/30"></div>
+          <div className="flex items-center gap-6">
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] font-bold text-outline uppercase tracking-widest">Sound</span>
+              <div className="w-10 h-5 bg-tertiary/20 rounded-full relative p-1 cursor-pointer">
+                <div className="absolute right-1 top-1 bottom-1 w-3 bg-tertiary rounded-full shadow-[0_0_8px_#82db7e]"></div>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] font-bold text-outline uppercase tracking-widest">Record</span>
+              <div className="w-10 h-5 bg-outline-variant/20 rounded-full relative p-1 cursor-pointer">
+                <div className="absolute left-1 top-1 bottom-1 w-3 bg-outline rounded-full"></div>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="flex gap-4">
-        {[
-          { label: 'Latency', value: '14ms', color: 'text-tertiary' },
-          { label: 'CPU Temp', value: '52°C', color: 'text-on-surface' },
-          { label: 'PWR Load', value: '64%', color: 'text-on-surface' }
-        ].map(stat => (
-          <div key={stat.label} className="bg-surface-container-highest/30 px-5 py-3 border border-outline-variant/10 flex flex-col items-center min-w-[120px] shadow-sm">
-            <span className="text-[9px] font-headline font-bold text-outline tracking-widest uppercase mb-1 opacity-80">{stat.label}</span>
-            <span className={`font-mono text-sm ${stat.color} font-black`}>{stat.value}</span>
-          </div>
-        ))}
-      </div>
-
-      <div className="flex items-center gap-6">
-        <div className="text-right">
-          <p className="font-headline font-black text-xs text-primary italic tracking-tight">UTC 21:42:08</p>
-          <p className="text-[9px] font-mono text-outline font-bold tracking-widest opacity-60">STATION DIST: 12.4KM</p>
+      <div className="col-span-3 flex gap-1">
+        <div className="flex-1 flex flex-col justify-center items-center bg-surface-container-high px-4 font-mono text-[10px] border border-white/5">
+          <span className="text-outline uppercase text-[8px] tracking-[0.2em] mb-1">Session Time</span>
+          <span className="text-on-surface font-black tracking-widest tabular-nums">04:22:15:88</span>
         </div>
-        <button className="bg-[#1C2A41] p-3 hover:bg-surface-container-highest transition-all border border-tertiary/20 shadow-lg shadow-black/20 group" title="Sync with Repository">
-          <span className="material-symbols-outlined text-tertiary text-xl group-hover:rotate-180 transition-transform duration-700">sync</span>
-        </button>
-        <button className="bg-[#1C2A41] p-3 hover:bg-surface-container-highest transition-all border border-primary/20 shadow-lg shadow-black/20">
-          <span className="material-symbols-outlined text-primary text-xl">fullscreen</span>
+        <button className="bg-surface-container-highest text-primary px-6 flex items-center gap-2 font-bold text-xs uppercase tracking-widest hover:bg-surface-bright transition-colors group">
+          <span className="material-symbols-outlined text-base group-hover:rotate-180 transition-transform duration-700">history_edu</span>
+          LOGS
         </button>
       </div>
     </footer>

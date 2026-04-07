@@ -65,58 +65,21 @@ export default function Home() {
   }
 
   return (
-    <div className="h-screen flex flex-col bg-background font-body text-on-surface overflow-hidden">
-      <AudioAlert status={detection && detection.distance < 300 ? "DANGER" : "SAFE"} />
+    <div className="h-screen bg-[#041329] text-[#d6e3ff] font-body overflow-hidden flex flex-col">
+      <AudioAlert status={(detection && detection.distance < 300) ? "DANGER" : "SAFE"} />
       
       <Header />
 
-      <div className="flex flex-1 overflow-hidden relative">
-        {/* Left Sidebar Navigation */}
-        <aside className="w-24 bg-[#0D1C32] flex flex-col items-center py-4 space-y-1 z-40 border-r border-outline-variant/10">
-          <div className="mb-6 flex flex-col items-center">
-            <span className="font-headline font-black text-lg text-primary tracking-tighter">LOCO-8821</span>
-            <span className="font-headline font-bold uppercase text-[7px] text-outline tracking-widest">ZONE: NR-DLH</span>
-          </div>
-          <nav className="flex-1 w-full flex flex-col">
-            {[
-              { icon: 'analytics', label: 'Diagnostics' },
-              { icon: 'cloud', label: 'Weather', active: true },
-              { icon: 'visibility', label: 'Track View' },
-              { icon: 'thermostat', label: 'Thermal' },
-              { icon: 'router', label: 'Network' }
-            ].map((nav) => (
-              <div key={nav.label} className={`py-4 flex flex-col items-center justify-center cursor-pointer transition-colors ${nav.active ? 'bg-[#1C2A41] text-primary border-l-4 border-primary w-full' : 'text-outline hover:bg-[#1C2A41] hover:text-on-surface'}`}>
-                <span className="material-symbols-outlined mb-1 text-xl">{nav.icon}</span>
-                <span className="font-headline font-black uppercase text-[8px] tracking-tighter">{nav.label}</span>
-              </div>
-            ))}
-          </nav>
-          <div className="mt-auto w-full flex flex-col items-center gap-4 py-4">
-            <button 
-                onClick={() => setIsActive(false)}
-                className="bg-error-container text-on-error-container font-headline font-black text-[9px] py-4 px-1 w-11/12 leading-tight text-center hover:brightness-110 active:scale-95 transition-all shadow-lg shadow-error/10"
-            >
-                EXIT SYSTEM
-            </button>
-          </div>
-        </aside>
+      <main className="flex-1 grid grid-cols-12 gap-1 p-1 overflow-hidden">
+        {/* Left Panel: Systems & Telemetry (3 Cols) */}
+        <SystemStatus />
 
-        {/* Main Interface Content */}
-        <main className="flex-1 p-4 grid grid-cols-12 gap-4 overflow-hidden bg-background">
-          {/* Left Column: Systems & Weather */}
-          <SystemStatus />
+        {/* Center Panel: Live Feed (6 Cols) - VideoFeed component */}
+        <VideoFeed detections={detection ? [detection] : []} />
 
-          {/* Center Column: Video Feed */}
-          <section className="col-span-6 flex flex-col overflow-hidden">
-            <VideoFeed detections={detection ? [detection] : []} />
-          </section>
-
-          {/* Right Column: Alerts */}
-          <section className="col-span-3 h-full overflow-hidden">
-            <AlertPanel detection={detection} />
-          </section>
-        </main>
-      </div>
+        {/* Right Panel: Alert System (3 Cols) - AlertPanel component */}
+        <AlertPanel detection={detection} />
+      </main>
 
       <ControlPanel />
     </div>
