@@ -31,7 +31,7 @@ const VideoFeed: React.FC<VideoFeedProps> = ({ detections = [] }) => {
   }, []);
 
   return (
-    <div className="flex-1 flex flex-col relative bg-black overflow-hidden tactical-glow group">
+    <div className="col-span-6 h-full flex flex-col relative bg-black overflow-hidden tactical-glow group">
       {/* Video Stream */}
       <video
         ref={videoRef}

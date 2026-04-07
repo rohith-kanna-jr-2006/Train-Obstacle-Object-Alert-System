@@ -13,7 +13,7 @@ interface AlertPanelProps {
 
 const AlertPanel: React.FC<AlertPanelProps> = ({ detection = null }) => {
   return (
-    <aside className="flex flex-col gap-1 h-full">
+    <aside className="col-span-3 flex flex-col gap-1 h-full overflow-hidden">
       {/* Status Display */}
       <section className={`${detection ? 'bg-error-container' : 'bg-surface-container-low'} p-6 flex flex-col items-center justify-center gap-4 flex-1 transition-colors duration-500`}>
         <span className={`material-symbols-outlined text-6xl ${detection ? 'text-on-error-container animate-pulse' : 'text-primary/20'}`} style={{ fontVariationSettings: "'FILL' 1" }}>
