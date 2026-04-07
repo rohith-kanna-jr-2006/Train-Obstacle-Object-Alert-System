@@ -15,7 +15,7 @@ const AlertPanel: React.FC<AlertPanelProps> = ({ detection = null }) => {
   const isDanger = detection && detection.distance < 300;
 
   return (
-    <aside className="col-span-3 flex flex-col gap-4 h-full">
+    <div className="flex flex-col gap-4 h-full">
       <div className={`p-4 border-l-4 ${isDanger ? 'bg-error-container/20 border-error animate-pulse' : 'bg-surface-container-low border-primary/30'} h-full flex flex-col transition-colors duration-500`}>
         <div className="flex items-center gap-3 mb-6">
           <span className={`material-symbols-outlined text-3xl ${isDanger ? 'text-error' : 'text-primary'}`}>
@@ -63,7 +63,7 @@ const AlertPanel: React.FC<AlertPanelProps> = ({ detection = null }) => {
           </button>
         </div>
       </div>
-    </aside>
+    </div>
   );
 };
 
