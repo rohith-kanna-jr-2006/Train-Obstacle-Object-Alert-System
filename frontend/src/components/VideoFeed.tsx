@@ -11,9 +11,10 @@ interface Detection {
 
 interface VideoFeedProps {
   detections: Detection[];
+  speed: number;
 }
 
-const VideoFeed: React.FC<VideoFeedProps> = ({ detections = [] }) => {
+const VideoFeed: React.FC<VideoFeedProps> = ({ detections = [], speed }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -31,107 +32,63 @@ const VideoFeed: React.FC<VideoFeedProps> = ({ detections = [] }) => {
   }, []);
 
   return (
-    <div className="flex-1 flex flex-col relative border border-outline-variant/30 overflow-hidden bg-black font-body">
-      {/* Top Static Badge Overlays */}
-      <div className="absolute top-4 left-4 z-10 flex items-center gap-3">
-        <div className="bg-error px-2 py-0.5 animate-pulse">
-            <span className="text-[10px] font-headline font-black text-on-error uppercase">REC ● AI ACTIVE</span>
-        </div>
-        <div className="bg-surface-container-highest/80 backdrop-blur px-3 py-0.5 border border-outline-variant/50">
-            <span className="text-[10px] font-mono text-primary uppercase">INFRARED MODE / 0.7μm - 14μm</span>
-        </div>
-        <div className="hidden lg:flex items-center gap-3 bg-surface-container-highest/80 backdrop-blur px-3 py-0.5 border border-outline-variant/50">
-            <span className="text-[9px] font-headline font-bold text-outline uppercase mr-2 tracking-widest">THERMAL VIEW</span>
-            <div className="w-8 h-4 bg-tertiary shadow-[inset_0_1px_2px_rgba(0,0,0,0.5)] relative">
-                <div className="absolute right-0.5 top-0.5 bottom-0.5 w-3 bg-white"></div>
-            </div>
+    <div className="col-span-6 h-full flex flex-col relative bg-black overflow-hidden tactical-glow group">
+      {/* Video Stream */}
+      <video
+        ref={videoRef}
+        autoPlay
+        playsInline
+        muted
+        className="absolute inset-0 w-full h-full object-cover opacity-60 mix-blend-screen scale-x-[-1] grayscale contrast-[1.2]"
+      />
+      
+      {/* AI Overlay Elements */}
+      <div className="absolute inset-0 scanline pointer-events-none"></div>
+
+      {/* Center Target Reticle */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <div className="w-16 h-16 border border-primary/20 rounded-full flex items-center justify-center">
+          <div className="w-1 h-1 bg-primary rounded-full animate-pulse shadow-[0_0_10px_#b1c5ff]"></div>
         </div>
       </div>
 
-      {/* Main Track View (Thermal Filter) */}
-      <div className="relative flex-1 thermal-gradient">
-        <video
-          ref={videoRef}
-          autoPlay
-          playsInline
-          muted
-          className="absolute inset-0 w-full h-full object-cover opacity-50 mix-blend-screen scale-x-[-1] grayscale contrast-[1.5] brightness-[1.1]"
-        />
-        <div className="absolute inset-0 scanline opacity-30"></div>
+      <AnimatePresence>
+        {detections.map((d) => (
+          <motion.div
+            key={d.id}
+            initial={{ opacity: 0, scale: 1.1 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 1.1 }}
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-64 border-2 border-error animate-pulse flex flex-col items-start shadow-[0_0_20px_rgba(255,180,171,0.3)]"
+          >
+            <div className="bg-error text-on-error text-[10px] font-bold px-2 py-0.5 uppercase">OBSTACLE: {d.object.toUpperCase()}</div>
+            <div className="mt-auto w-full bg-error/20 text-error text-[10px] font-bold p-1 text-center backdrop-blur-sm">DIST: {d.distance}M</div>
+          </motion.div>
+        ))}
+      </AnimatePresence>
 
-        {/* AI Detection Overlays */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <AnimatePresence>
-            {detections.map((d) => (
-              <motion.div
-                key={d.id}
-                initial={{ opacity: 0, scale: 1.1 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 1.1 }}
-                className={`w-56 h-56 border-2 border-error relative danger-pulse`}
-              >
-                <div className="absolute -top-6 left-0 bg-error px-2 text-[10px] font-headline font-black text-on-error uppercase whitespace-nowrap">
-                  OBSTACLE: {d.object.toUpperCase()}
-                </div>
-                <div className="absolute top-0 right-0 p-1">
-                  <span className="text-[10px] font-mono text-error font-bold">{d.distance}m</span>
-                </div>
-                
-                <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="material-symbols-outlined text-error text-6xl opacity-60 animate-pulse fill-current">
-                        {d.object === "Animal" ? "pets" : d.object === "Person" ? "person" : "warning"}
-                    </span>
-                </div>
-
-                {/* Bounding Corner Accents */}
-                <div className="absolute -top-1 -left-1 w-4 h-4 border-t-4 border-l-4 border-error"></div>
-                <div className="absolute -top-1 -right-1 w-4 h-4 border-t-4 border-r-4 border-error"></div>
-                <div className="absolute -bottom-1 -left-1 w-4 h-4 border-b-4 border-l-4 border-error"></div>
-                <div className="absolute -bottom-1 -right-1 w-4 h-4 border-b-4 border-r-4 border-error"></div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </div>
-
-        {/* HUD: HUD elements */}
-        <div className="absolute bottom-6 left-6 right-6 flex justify-between items-end pointer-events-none">
-          <div className="space-y-1">
-            <p className="text-[10px] font-headline font-bold text-outline opacity-80 tracking-widest uppercase">Auto Brake Armed</p>
-            <div className="flex gap-1">
-              <div className="w-6 h-1 bg-tertiary"></div>
-              <div className="w-6 h-1 bg-tertiary"></div>
-              <div className="w-6 h-1 bg-tertiary"></div>
-              <div className="w-6 h-1 bg-outline-variant/30"></div>
-            </div>
-          </div>
-          <div className="text-right">
-            <p className="text-6xl font-headline font-black text-primary tracking-tighter italic">
-                84 <span className="text-xl not-italic opacity-40">KM/H</span>
-            </p>
-          </div>
-        </div>
+      {/* Distance Markers */}
+      <div className="absolute right-4 top-1/4 bottom-1/4 w-12 flex flex-col justify-between items-end border-r border-primary/40 text-[10px] text-primary/60 font-mono pr-2 pointer-events-none">
+        <span>500M</span>
+        <span>400M</span>
+        <span className="text-error font-bold">300M</span>
+        <span className="text-error font-bold underline">200M</span>
+        <span>100M</span>
+        <span>0M</span>
       </div>
 
-      {/* Action Bar (Below Video) */}
-      <div className="bg-surface-container-high h-16 flex items-center justify-between px-6 border-t border-outline-variant/30">
-        <div className="flex gap-8">
-          <div className="flex flex-col">
-            <span className="text-[9px] font-headline font-bold text-outline uppercase tracking-widest">AI Confidence</span>
-            <span className="font-mono text-sm text-tertiary">{detections.length > 0 ? (detections[0].confidence * 100).toFixed(1) : '---'}%</span>
-          </div>
-          <div className="flex flex-col">
-            <span className="text-[9px] font-headline font-bold text-outline uppercase tracking-widest">Time to Impact</span>
-            <span className="font-mono text-sm text-error">06.4s</span>
-          </div>
-        </div>
-        <div className="flex gap-2">
-          <button className="bg-primary-container text-on-primary-container px-6 py-2 font-headline font-bold text-[10px] uppercase hover:bg-primary transition-all border border-primary/20">
-              Manual Override
-          </button>
-          <button className="bg-error-container text-on-error-container px-6 py-2 font-headline font-bold text-[10px] uppercase hover:bg-error transition-all border border-error/20">
-              Emergency Brake
-          </button>
-        </div>
+      {/* FPS & Quality Metadata */}
+      <div className="absolute bottom-4 left-4 flex gap-4 text-[10px] font-mono text-tertiary bg-background/60 backdrop-blur px-3 py-1 border border-white/5 pointer-events-none">
+        <span>FPS: 60.2</span>
+        <span>RES: 4K-RAW</span>
+        <span>LATENCY: 12MS</span>
+      </div>
+
+      {/* Speed Overlay */}
+      <div className="absolute bottom-6 right-6 text-right pointer-events-none">
+         <p className="text-5xl font-headline font-black text-primary tracking-tighter italic leading-none">
+            {speed} <span className="text-lg not-italic opacity-40">KM/H</span>
+         </p>
       </div>
     </div>
   );

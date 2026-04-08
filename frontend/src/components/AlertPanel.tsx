@@ -8,61 +8,92 @@ interface Detection {
 }
 
 interface AlertPanelProps {
-    detection: Detection | null;
+  detection: Detection | null;
+  level: number;
 }
 
-const AlertPanel: React.FC<AlertPanelProps> = ({ detection = null }) => {
-  const isDanger = detection && detection.distance < 300;
+const AlertPanel: React.FC<AlertPanelProps> = ({ detection = null, level: alertLevel }) => {
+  const levelText = ["SECURE", "CAUTION", "WARNING", "CRITICAL"][alertLevel];
+  const levelColor = ["text-tertiary", "text-secondary", "text-error", "text-error animate-pulse"][alertLevel];
 
   return (
-    <aside className="col-span-3 flex flex-col gap-4 h-full">
-      <div className={`p-4 border-l-4 ${isDanger ? 'bg-error-container/20 border-error animate-pulse' : 'bg-surface-container-low border-primary/30'} h-full flex flex-col transition-colors duration-500`}>
-        <div className="flex items-center gap-3 mb-6">
-          <span className={`material-symbols-outlined text-3xl ${isDanger ? 'text-error' : 'text-primary'}`}>
-            {isDanger ? 'report' : 'check_circle_outline'}
-          </span>
-          <div>
-            <h2 className={`${isDanger ? 'text-error' : 'text-primary'} font-headline font-black text-xl leading-none uppercase`}>
-                {isDanger ? 'DANGER' : 'SECURE'}
-            </h2>
-            <p className={`text-[10px] font-headline font-bold uppercase ${isDanger ? 'text-error/80' : 'text-outline'}`}>
-                {isDanger ? 'Collision Imminent' : 'Clear Track Scanning'}
-            </p>
-          </div>
+    <aside className="col-span-3 flex flex-col gap-1 h-full overflow-hidden">
+      {/* Status Display */}
+      <section className={`${alertLevel >= 2 ? 'bg-error-container' : 'bg-surface-container-low'} p-6 flex flex-col items-center justify-center gap-4 flex-1 transition-colors duration-500`}>
+        <span className={`material-symbols-outlined text-6xl ${alertLevel >= 2 ? 'text-on-error-container animate-pulse' : 'text-primary/20'}`} style={{ fontVariationSettings: "'FILL' 1" }}>
+          {alertLevel >= 2 ? 'warning' : 'shield_with_heart'}
+        </span>
+        <div className="text-center">
+          <h2 className={`font-headline text-5xl font-black tracking-tighter ${alertLevel >= 2 ? 'text-on-error-container' : 'text-primary-container opacity-20'}`}>
+            {alertLevel >= 2 ? 'DANGER' : 'SECURE'}
+          </h2>
+          <p className={`${alertLevel >= 2 ? 'text-on-error-container' : 'text-primary/20'} text-[10px] font-bold tracking-[0.2em] mt-2 opacity-80 uppercase`}>
+            {alertLevel >= 3 ? 'IMMEDIATE IMPACT RISK' : alertLevel === 2 ? 'OBSTACLE ON TRACK' : 'CLEAR TRACK SCANNING'}
+          </p>
         </div>
+      </section>
 
-        <div className="flex-1 space-y-6">
-          <div className={`bg-surface-container-highest p-4 border ${isDanger ? 'border-error/30' : 'border-outline-variant/30'}`}>
-            <h4 className="text-[10px] font-headline font-bold text-primary uppercase mb-2">Object Analysis</h4>
-            <p className="text-xs text-on-surface leading-relaxed">
-                {detection 
-                    ? `AI identifies a ${detection.object.toLowerCase()} directly on track path. High thermal signature detected. Movement predicted: STAGNANT.`
-                    : "No obstacles currently detected within the specified safety perimeter. Scanning continues at 60Hz."}
-            </p>
-          </div>
-
-          <div className="space-y-4">
-            <h4 className="text-[10px] font-headline font-bold text-primary uppercase border-b border-outline-variant pb-1">Automated Protocol</h4>
-            {[
-              { name: 'Horn Blast (Auto)', status: isDanger ? 'EXECUTING' : 'IDLE', color: isDanger ? 'text-tertiary' : 'text-outline' },
-              { name: 'Headlights Max', status: isDanger ? 'ACTIVE' : 'READY', color: isDanger ? 'text-tertiary' : 'text-outline' },
-              { name: 'Sand Applicator', status: 'READY', color: 'text-outline' }
-            ].map((p) => (
-              <div key={p.name} className="flex justify-between items-center">
-                <span className="text-[11px] font-headline text-on-surface-variant">{p.name}</span>
-                <span className={`text-[11px] font-mono ${p.color}`}>{p.status}</span>
+      {/* Detection Metrics */}
+      <section className="bg-surface-container-low p-6 flex flex-col gap-6">
+        <div className="space-y-4">
+          <div className="flex justify-between items-start">
+            <div>
+              <span className="text-[10px] text-outline block mb-1 uppercase tracking-widest">Object</span>
+              <div className="text-2xl font-headline font-bold text-on-surface uppercase tracking-tight italic">
+                {detection ? detection.object : 'NONE'}
               </div>
-            ))}
+            </div>
+            <div className="text-right">
+              <span className="text-[10px] text-outline block mb-1 uppercase tracking-widest">Alert Level</span>
+              <div className={`text-xl font-headline font-black uppercase tracking-widest ${levelColor}`}>
+                LVL {alertLevel}: {levelText}
+              </div>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <span className="text-[10px] text-outline block mb-1 uppercase tracking-widest uppercase">Distance</span>
+              <div className={`text-3xl font-headline font-black ${alertLevel >= 2 ? 'text-error' : 'text-primary/40'}`}>
+                {detection ? detection.distance : '---'}<span className="text-sm ml-1 font-bold">m</span>
+              </div>
+            </div>
+            <div>
+              <span className="text-[10px] text-outline block mb-1 uppercase tracking-widest">Confidence</span>
+              <div className={`text-3xl font-headline font-black ${detection ? 'text-primary' : 'text-primary/20'}`}>
+                {detection ? (detection.confidence * 100).toFixed(0) : '---'}<span className="text-sm ml-1 font-bold">%</span>
+              </div>
+            </div>
           </div>
         </div>
-
-        <div className="mt-auto pt-6">
-          <button className="w-full bg-surface-container-highest text-primary border border-primary/30 py-3 font-headline font-bold text-[10px] uppercase flex items-center justify-center gap-2 hover:bg-primary/10 transition-all">
-            <span className="material-symbols-outlined text-sm">mic</span>
-            Declare External Emergency
-          </button>
+        
+        <div className="pt-6 border-t border-outline-variant/20 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className={`w-12 h-12 rounded-full ${detection ? 'bg-error/20 border-error/50' : 'bg-primary/5 border-primary/10'} flex items-center justify-center border`}>
+              <span className={`material-symbols-outlined ${detection ? 'text-error animate-pulse' : 'text-primary/20'}`} style={{ fontVariationSettings: "'FILL' 1" }}>
+                volume_up
+              </span>
+            </div>
+            <div>
+              <span className="text-[10px] font-bold block uppercase tracking-wide">Audio Alert</span>
+              <span className={`text-[10px] ${detection ? 'text-tertiary font-bold' : 'text-outline/40'}`}>
+                {detection ? 'ACTIVE - 110dB' : 'STANDBY'}
+              </span>
+            </div>
+          </div>
+          <span className="text-[10px] font-mono text-outline opacity-40">REF: #774-A</span>
         </div>
-      </div>
+      </section>
+
+      {/* Operator Identity */}
+      <section className="bg-surface-container-highest p-4 flex items-center gap-4">
+        <div className="w-10 h-10 bg-primary-container flex items-center justify-center overflow-hidden">
+           <span className="material-symbols-outlined text-primary text-2xl">account_circle</span>
+        </div>
+        <div>
+          <h3 className="text-xs font-bold text-primary uppercase tracking-wider">COMMANDER</h3>
+          <p className="text-[10px] text-outline uppercase tracking-widest opacity-60">SECTOR-04 STATION</p>
+        </div>
+      </section>
     </aside>
   );
 };
