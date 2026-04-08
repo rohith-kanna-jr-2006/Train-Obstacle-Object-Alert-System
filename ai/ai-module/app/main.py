@@ -33,7 +33,7 @@ def run():
         detections, annotated = detect(frame)
 
         for d in detections:
-            dist = estimate_distance(d["width"])
+            dist = estimate_distance(d["width"], d["label"])
             payload = {
                 "train_id": TRAIN_ID,
                 "object": d["label"],

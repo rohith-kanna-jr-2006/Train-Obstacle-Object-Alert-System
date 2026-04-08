@@ -34,3 +34,23 @@ export const postDetection = async (data: DetectionData) => {
     throw error;
   }
 };
+
+export const fetchDetection = async (): Promise<DetectionData | null> => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/detect`, {
+      cache: 'no-store'
+    });
+    if (!response.ok) throw new Error("Failed to fetch detection");
+    const data = await response.json();
+    
+    // Check if there's actually a detection
+    if (!data || data.object === "None" || data.id === "init") {
+      return null;
+    }
+    
+    return data;
+  } catch (error) {
+    console.error("Error fetching detection:", error);
+    return null;
+  }
+};

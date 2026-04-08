@@ -13,6 +13,8 @@ import ControlPanel from "@/components/ControlPanel";
 import SetupScreen from "@/components/SetupScreen";
 import ActivityLog from "@/components/ActivityLog";
 
+import { fetchDetection } from "@/services/api";
+
 interface Detection {
   id: string;
   object: string;
@@ -28,31 +30,36 @@ export default function Home() {
   const [startupProgress, setStartupProgress] = useState(0);
   const [speed, setSpeed] = useState(72);
 
-  // Simulation logic...
+  // Poll for real detection data from the backend
   useEffect(() => {
     let interval: NodeJS.Timeout;
     if (isActive && systemActive) {
-      interval = setInterval(() => {
-        const hasDetection = Math.random() > 0.85;
-        if (hasDetection) {
-          setDetection({
-            id: Math.random().toString(36).substr(2, 9),
-            object: "Animal",
-            distance: Math.floor(Math.random() * 500),
-            confidence: 0.85 + (Math.random() * 0.1),
-            timestamp: new Date().toLocaleTimeString()
-          });
-        } else {
+      interval = setInterval(async () => {
+        try {
+          const data = await fetchDetection();
+          if (data) {
+            setDetection({
+              id: Math.random().toString(36).substring(2, 9),
+              object: data.object,
+              distance: data.distance,
+              confidence: data.confidence,
+              timestamp: new Date().toLocaleTimeString()
+            });
+          } else {
+            setDetection(null);
+          }
+        } catch (err) {
+          console.error("Failed to fetch detection:", err);
           setDetection(null);
         }
 
-        // Simulating speed fluctuation
+        // Simulating speed fluctuation (optional, could be from API too)
         setSpeed(prev => {
           const mod = Math.random() > 0.5 ? 1 : -1;
           const newSpeed = prev + (Math.random() * 2 * mod);
           return Math.min(Math.max(newSpeed, 65), 85);
         });
-      }, 3000);
+      }, 500); // Poll every 500ms
     }
     return () => clearInterval(interval);
   }, [isActive, systemActive]);

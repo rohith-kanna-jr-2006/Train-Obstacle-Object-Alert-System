@@ -26,7 +26,11 @@ const VideoFeed: React.FC<VideoFeedProps> = ({ detections = [], speed }) => {
           }
         })
         .catch((err) => {
-          console.error("Webcam access error:", err);
+          if (err.name === "NotReadableError" || err.name === "TrackStartError") {
+            console.warn("Camera is already in use by another application (likely the AI Module).");
+          } else {
+            console.error("Webcam access error:", err);
+          }
         });
     }
   }, []);

@@ -33,3 +33,10 @@ Thumbs.db
 
 # Zip files
 *.zip
+
+# Datasets
+Animal Detection/
+ai/training/animal_dataset/
+ai/training/railway_detection/
+*.pt
+*.h5
