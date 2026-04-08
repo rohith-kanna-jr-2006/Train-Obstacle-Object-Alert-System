@@ -45,7 +45,7 @@ def run():
         # Draw Simulation Mode Label on screen
         cv2.putText(annotated, f"Mode: {mode}", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 0), 2)
 
-        cv2.imshow("AI Detection System - M3", annotated)
+        cv2.imshow("AI Detection System", annotated)
         key = cv2.waitKey(1) & 0xFF
         if key == 27: # ESC
             break
