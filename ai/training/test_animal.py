@@ -4,7 +4,7 @@ import os
 
 def test_animal(image_path):
     # Path to your NEWLY trained model
-    model_path = "animal_classification/railway_animals/weights/best.pt"
+    model_path = "runs/classify/animal_classification/railway_animals/weights/best.pt"
     
     if not os.path.exists(model_path):
         print("Model training isn't finished yet! Please wait a minute.")
