@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>RAIL-AI SENTINEL | System Startup</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "tertiary": "#82db7e",
+                        "on-primary": "#002c71",
+                        "primary": "#b1c5ff",
+                        "surface-container": "#112036",
+                        "inverse-primary": "#345baf",
+                        "surface-container-low": "#0d1c32",
+                        "on-primary-container": "#8dadff",
+                        "on-secondary": "#1e304f",
+                        "background": "#041329",
+                        "on-secondary-container": "#a3b5db",
+                        "on-error": "#690005",
+                        "surface-container-lowest": "#010e24",
+                        "tertiary-fixed": "#9df898",
+                        "surface-bright": "#2c3951",
+                        "on-tertiary": "#00390a",
+                        "secondary-container": "#354767",
+                        "surface-container-high": "#1c2a41",
+                        "secondary-fixed-dim": "#b5c7ed",
+                        "surface-variant": "#27354c",
+                        "on-surface-variant": "#c4c6d3",
+                        "error-container": "#93000a",
+                        "on-secondary-fixed-variant": "#354767",
+                        "on-primary-fixed-variant": "#144296",
+                        "surface-tint": "#b1c5ff",
+                        "outline-variant": "#434652",
+                        "primary-container": "#0b3d91",
+                        "primary-fixed": "#dae2ff",
+                        "surface-dim": "#041329",
+                        "on-error-container": "#ffdad6",
+                        "secondary": "#b5c7ed",
+                        "outline": "#8e909d",
+                        "inverse-on-surface": "#233148",
+                        "primary-fixed-dim": "#b1c5ff",
+                        "on-tertiary-fixed": "#002204",
+                        "tertiary-container": "#004e11",
+                        "on-surface": "#d6e3ff",
+                        "on-tertiary-container": "#6bc269",
+                        "on-secondary-fixed": "#061b39",
+                        "secondary-fixed": "#d7e3ff",
+                        "on-tertiary-fixed-variant": "#005312",
+                        "on-background": "#d6e3ff",
+                        "surface-container-highest": "#27354c",
+                        "tertiary-fixed-dim": "#82db7e",
+                        "inverse-surface": "#d6e3ff",
+                        "surface": "#041329",
+                        "on-primary-fixed": "#001947",
+                        "error": "#ffb4ab"
+                    },
+                    fontFamily: {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>.material-symbols-outlined {
+    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24
+    }
+body {
+    background-color: #041329;
+    color: #d6e3ff;
+    font-family: "Inter", sans-serif;
+    overflow: hidden
+    }
+.scanline {
+    width: 100%;
+    height: 2px;
+    background: rgba(177, 197, 255, 0.1);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 50;
+    pointer-events: none;
+    animation: moveScanline 8s linear infinite
+    }
+@keyframes moveScanline {
+    0% {
+        top: 0%;
+        } 100% {
+        top: 100%;
+        }
+    }
+.grain-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuAJprAuEq5JoLylR23v6LYRNcrJjZlfWs0EoB-cyU7tySoNpZZLKziz7kDm_DPZwgZFlW3ROeyPny_Mo28h--M7803rgdPGNMochDo-hbHHWYelYWm-Qolb53cSRjYm3MNNjrI75BmOMRopAtJPDlvpLMxaYIafA4rILEvPPYq6dcLD2VdLw6FbhbvECuY7ym43Yt-noJRk1yLw9MNiuB8fgjOUg4XbgE9lq_OSSolzwMThzoBrOWy63gCFfQGlV5ARvfQdJHjYjUI);
+    opacity: 0.03;
+    pointer-events: none;
+    z-index: 60
+    }</style>
+</head>
+<body class="flex flex-col min-h-screen">
+<div class="grain-overlay"></div>
+<div class="scanline"></div>
+<!-- Top Navigation Bar (JSON Shell Integration) -->
+<header class="bg-[#041329] text-[#B1C5FF] font-['Space_Grotesk'] font-bold uppercase tracking-tighter flex justify-between items-center w-full px-6 py-4 fixed top-0 z-40">
+<div class="flex items-center gap-4">
+<div class="text-xl font-black text-[#B1C5FF] italic">RAIL-AI SENTINEL</div>
+<div class="hidden md:flex items-center gap-6 text-xs tracking-widest">
+<span class="text-[#B1C5FF] border-b-2 border-[#B1C5FF]">TRAIN-ID: IR-2024-XP</span>
+<span class="text-[#434652]">SPEED: 112 KM/H</span>
+<span class="text-[#434652]">MODE: AUTO-TACTICAL</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#B1C5FF] hover:bg-[#1C2A41] transition-colors duration-150 p-1 cursor-pointer">notifications_active</span>
+<span class="material-symbols-outlined text-[#B1C5FF] hover:bg-[#1C2A41] transition-colors duration-150 p-1 cursor-pointer">settings</span>
+</div>
+</header>
+<!-- Main Content: Startup Canvas -->
+<main class="flex-grow flex items-center justify-center pt-20 px-6 relative">
+<div class="w-full max-w-6xl grid grid-cols-12 gap-0 border border-outline-variant/10">
+<!-- Left Panel: Logo & Status Branding -->
+<div class="col-span-12 lg:col-span-5 bg-surface-container-low p-12 flex flex-col justify-between border-r border-outline-variant/10">
+<div class="space-y-8">
+<div class="w-32 h-32 relative">
+<img alt="Indian Railways Emblem" class="w-full h-full object-contain brightness-0 invert opacity-80" data-alt="Official Indian Railways emblem symbol in sharp white vector style against a dark technical background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDYf1vSaRhdrtDpFU2sbdBBwbtbG05b5E08hGTWISqXFtzTz7fCYkWidfnJRglt09_WNh2EbmDNJK_pHnPsiNtq9zX45mOwYkKn8LeLoKpMmF4zH8X89qH7m2VFLHMCtCM0lR-hIYyGluRf3WaMGujFlHw2A9oraH_gOkuRMSQFsg0jGAvwTFQSS_8Z3FrtHjtArqjjowXhdQd1gl9mc764bdIkccQufou8psqu1L3WGubRYbainraJ0od144GBfxhj7_s3yKEfRQI"/>
+<div class="absolute inset-0 bg-primary/10 blur-xl"></div>
+</div>
+<div>
+<h1 class="font-headline text-5xl font-black tracking-tighter leading-none mb-2">RAIL-AI<br/>SENTINEL</h1>
+<p class="font-label text-sm text-on-surface-variant tracking-[0.2em] font-medium">NEURAL OBSTACLE DETECTION SYSTEM</p>
+</div>
+</div>
+<div class="space-y-4">
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 bg-tertiary"></div>
+<span class="font-headline text-xs font-bold tracking-widest uppercase">SYST_RUN_LEVEL: 04</span>
+</div>
+<div class="font-body text-[10px] text-outline tabular-nums leading-relaxed">
+                        KERNEL: SENTINEL-V4.2.0-STABLE<br/>
+                        LOADER: GRUB-AI-GEN3<br/>
+                        AUTH: LOC-OPERATOR-ID-772
+                    </div>
+</div>
+</div>
+<!-- Right Panel: Tactical Monolith Console -->
+<div class="col-span-12 lg:col-span-7 bg-surface p-12 flex flex-col justify-between relative overflow-hidden">
+<!-- Asymmetric Data Ribbons (Decorative Background) -->
+<div class="absolute right-0 top-0 h-full w-24 bg-surface-container-high/20 pointer-events-none flex flex-col items-center py-10 gap-8">
+<div class="w-1 h-20 bg-primary-container/30"></div>
+<div class="w-1 h-32 bg-primary/20"></div>
+<div class="w-1 h-12 bg-error-container/40"></div>
+</div>
+<!-- Boot Sequence Log -->
+<div class="space-y-6 relative z-10">
+<div class="flex justify-between items-end mb-8">
+<h2 class="font-headline text-2xl font-bold uppercase tracking-tight">System Startup</h2>
+<span class="font-body text-xs text-primary/60 tabular-nums">EST: 0.8s</span>
+</div>
+<div class="space-y-4 font-body text-sm tabular-nums">
+<div class="flex items-center justify-between group">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-tertiary text-lg" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="text-on-surface">Kernel Security Modules</span>
+</div>
+<span class="text-tertiary font-mono">[ OK ]</span>
+</div>
+<div class="flex items-center justify-between border-l-2 border-primary/20 pl-4 py-1">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary text-lg animate-pulse">videocam</span>
+<span class="text-on-surface">Camera: Initializing...</span>
+</div>
+<span class="text-primary/70 text-xs">88%</span>
+</div>
+<div class="flex items-center justify-between border-l-2 border-primary-container/40 pl-4 py-1">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary text-lg animate-pulse">psychology</span>
+<span class="text-on-surface">AI Model: Loading Neural Weights...</span>
+</div>
+<span class="text-primary/70 text-xs">42%</span>
+</div>
+<div class="flex items-center justify-between border-l-2 border-outline-variant/30 pl-4 py-1 opacity-50">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-outline text-lg">database</span>
+<span class="text-outline">Database: Connecting to Central Grid...</span>
+</div>
+<span class="text-outline text-xs">PENDING</span>
+</div>
+<div class="flex items-center justify-between border-l-2 border-outline-variant/30 pl-4 py-1 opacity-50">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-outline text-lg">satellite_alt</span>
+<span class="text-outline">GPS Telemetry: Acquiring Lock...</span>
+</div>
+<span class="text-outline text-xs">PENDING</span>
+</div>
+</div>
+</div>
+<!-- Progress & Action -->
+<div class="mt-12 space-y-8 relative z-10">
+<div class="space-y-2">
+<div class="flex justify-between items-end font-label text-[10px] tracking-widest text-on-surface-variant uppercase">
+<span>Initializing Core Protocols</span>
+<span>64% COMPLETE</span>
+</div>
+<div class="h-2 w-full bg-surface-container-highest">
+<div class="h-full bg-gradient-to-r from-primary-container to-primary w-[64%] shadow-[0_0_15px_rgba(177,197,255,0.3)]"></div>
+</div>
+</div>
+<div class="flex gap-4">
+<button class="flex-1 bg-primary-container text-on-primary h-14 font-headline font-bold uppercase tracking-widest text-sm flex items-center justify-center gap-2 hover:bg-primary transition-colors active:scale-95">
+<span class="material-symbols-outlined text-lg">power_settings_new</span>
+                            Override Boot
+                        </button>
+<button class="px-6 border border-outline-variant/30 text-on-surface h-14 hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined">help_center</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Side Navigation Bar (JSON Shell Integration) -->
+<nav class="hidden md:flex flex-col h-screen w-64 bg-[#0D1C32] border-r border-[#434652]/15 fixed left-0 top-0 z-30 pt-20">
+<div class="p-6 mb-4">
+<div class="text-lg font-bold text-[#B1C5FF] uppercase font-headline">Commander</div>
+<div class="text-[10px] text-[#434652] opacity-70 tracking-widest uppercase">Sector-04 | HQ-DELHI</div>
+</div>
+<div class="flex-grow flex flex-col font-['Inter'] tabular-nums text-sm font-medium">
+<a class="flex items-center gap-4 px-6 py-4 bg-[#1C2A41] text-[#B1C5FF] border-l-4 border-[#B1C5FF]" href="#">
+<span class="material-symbols-outlined">monitor_heart</span>
+                SYSTEM HEALTH
+            </a>
+<a class="flex items-center gap-4 px-6 py-4 text-[#434652] opacity-70 hover:bg-[#1C2A41] transition-colors" href="#">
+<span class="material-symbols-outlined">cloud</span>
+                WEATHER METRICS
+            </a>
+<a class="flex items-center gap-4 px-6 py-4 text-[#434652] opacity-70 hover:bg-[#1C2A41] transition-colors" href="#">
+<span class="material-symbols-outlined">satellite_alt</span>
+                GPS TELEMETRY
+            </a>
+</div>
+<div class="mt-auto border-t border-[#434652]/10 p-4">
+<a class="flex items-center gap-4 px-4 py-3 text-[#434652] opacity-70 hover:bg-[#1C2A41] transition-colors rounded" href="#">
+<span class="material-symbols-outlined">history_edu</span>
+                LOGS
+            </a>
+</div>
+</nav>
+<!-- Footer Stats / Meta -->
+<footer class="mt-auto px-6 py-4 bg-surface-container-lowest border-t border-outline-variant/10 flex justify-between items-center text-[10px] text-outline font-label tracking-widest uppercase relative z-40">
+<div class="flex items-center gap-8">
+<span class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+                Uplink: Active
+            </span>
+<span>Latency: 14ms</span>
+<span>Encryption: AES-256</span>
+</div>
+<div>
+            © 2024 INDIAN RAILWAYS AI DIVISION
+        </div>
+</footer>
+</body></html>

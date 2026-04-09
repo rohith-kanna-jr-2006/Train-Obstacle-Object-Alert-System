@@ -1,0 +1,42 @@
+# Node.js
+node_modules/
+dist/
+build/
+.next/
+*.log
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Environment Variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+
+# Zip files
+*.zip
+
+# Datasets
+Animal Detection/
+ai/training/animal_dataset/
+ai/training/railway_detection/
+*.pt
+*.h5
