@@ -32,13 +32,21 @@ def run():
 
         detections, annotated = detect(frame)
 
+        # Aggregate all detections for this frame
+        current_frame_detections = []
         for d in detections:
             dist = estimate_distance(d["width"], d["label"])
-            payload = {
-                "train_id": TRAIN_ID,
+            current_frame_detections.append({
                 "object": d["label"],
                 "confidence": round(d["conf"], 2),
                 "distance": dist
+            })
+
+        if current_frame_detections:
+            payload = {
+                "train_id": TRAIN_ID,
+                "detections": current_frame_detections,
+                "timestamp": time.time()
             }
             post_detection(payload)
 

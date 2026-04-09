@@ -1,7 +1,14 @@
+import torch
 from ultralytics import YOLO
 
-# Pretrained YOLOv8 for COCO
+# Detect device: GPU (CUDA) if available, otherwise CPU
+device = "cuda" if torch.cuda.is_available() else "cpu"
+print(f"Using device: {device}")
+
+# Load model and move to optimal device
 model = YOLO("yolov8n.pt")
+if device == "cuda":
+    model.to(device)
 
 # Mapping COCO classes to our target classes: person, vehicle, animal, obstacle
 COCO_MAPPING = {

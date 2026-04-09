@@ -30,38 +30,75 @@ export default function Home() {
   const [startupProgress, setStartupProgress] = useState(0);
   const [speed, setSpeed] = useState(72);
 
-  // Poll for real detection data from the backend
+  // Real-time detection via WebSockets
   useEffect(() => {
-    let interval: NodeJS.Timeout;
-    if (isActive && systemActive) {
-      interval = setInterval(async () => {
+    if (!isActive || !systemActive) return;
+
+    let socket: WebSocket;
+    let reconnectTimeout: NodeJS.Timeout;
+
+    const connect = () => {
+      const apiHost = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+      const wsUrl = apiHost.replace("http", "ws") + "/ws";
+      
+      console.log("Connecting to WebSocket:", wsUrl);
+      socket = new WebSocket(wsUrl);
+
+      socket.onopen = () => {
+        console.log("Connected to detection stream");
+      };
+
+      socket.onmessage = (event) => {
         try {
-          const data = await fetchDetection();
-          if (data) {
+          const data = JSON.parse(event.data);
+          if (data && data.detections && data.detections.length > 0) {
+            // Priority: show the closest detection
+            const critical = data.detections.reduce((prev: any, curr: any) => 
+              (curr.distance < prev.distance) ? curr : prev
+            );
+            
             setDetection({
               id: Math.random().toString(36).substring(2, 9),
-              object: data.object,
-              distance: data.distance,
-              confidence: data.confidence,
+              object: critical.object || critical.label,
+              distance: critical.distance,
+              confidence: critical.confidence || critical.conf,
               timestamp: new Date().toLocaleTimeString()
             });
           } else {
             setDetection(null);
           }
         } catch (err) {
-          console.error("Failed to fetch detection:", err);
-          setDetection(null);
+          console.error("Error parsing socket message:", err);
         }
+      };
 
-        // Simulating speed fluctuation (optional, could be from API too)
-        setSpeed(prev => {
-          const mod = Math.random() > 0.5 ? 1 : -1;
-          const newSpeed = prev + (Math.random() * 2 * mod);
-          return Math.min(Math.max(newSpeed, 65), 85);
-        });
-      }, 500); // Poll every 500ms
-    }
-    return () => clearInterval(interval);
+      socket.onclose = () => {
+        console.log("Disconnected from detection stream, retrying...");
+        reconnectTimeout = setTimeout(connect, 3000);
+      };
+
+      socket.onerror = (err) => {
+        console.error("WebSocket error:", err);
+        socket.close();
+      };
+    };
+
+    connect();
+
+    // Speed fluctuation simulator
+    const speedInterval = setInterval(() => {
+      setSpeed(prev => {
+        const mod = Math.random() > 0.5 ? 1 : -1;
+        const newSpeed = prev + (Math.random() * 2 * mod);
+        return Math.min(Math.max(newSpeed, 65), 85);
+      });
+    }, 1000);
+
+    return () => {
+      if (socket) socket.close();
+      clearTimeout(reconnectTimeout);
+      clearInterval(speedInterval);
+    };
   }, [isActive, systemActive]);
 
   const handleStart = () => {
