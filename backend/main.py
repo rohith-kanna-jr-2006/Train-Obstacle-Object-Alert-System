@@ -1,6 +1,11 @@
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from typing import Optional
+import models
+from database import engine
+
+# Create database tables automatically
+models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
