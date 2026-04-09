@@ -1,8 +1,9 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from typing import Optional
+from sqlalchemy.orm import Session
 import models
-from database import engine
+from database import engine, get_db
 
 # Create database tables automatically
 models.Base.metadata.create_all(bind=engine)
@@ -33,12 +34,23 @@ async def get_detection():
     return latest_detection
 
 @app.post("/detect")
-async def post_point(request: Request):
+async def post_point(request: Request, db: Session = Depends(get_db)):
     # M3 AI Module calls this via POST
     global latest_detection
     try:
         data = await request.json()
         latest_detection = data
+        
+        # Save to PostgreSQL database
+        db_log = models.DetectionLog(
+            train_id=data.get("id", "unknown"),
+            object_type=data.get("object", "None"),
+            confidence=data.get("confidence", 0.0),
+            distance=data.get("distance", 1000.0)
+        )
+        db.add(db_log)
+        db.commit()
+        
         return {"status": "success", "received": data}
     except Exception as e:
         return {"status": "error", "message": str(e)}
