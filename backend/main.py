@@ -45,6 +45,10 @@ manager = ConnectionManager()
 # Global storage for the latest detection pool
 latest_detections = []
 
+@app.get("/")
+def home():
+    return {"status": "running"}
+
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
     await manager.connect(websocket)
@@ -95,7 +99,8 @@ async def post_detections(request: Request, db: Session = Depends(get_db)):
             "timestamp": data.get("timestamp")
         })
         
-        return {"status": "success", "count": len(detections)}
+        print("Detection data stored successfully")
+        return {"message": "Detection data stored successfully", "status": "success", "count": len(detections)}
     except Exception as e:
         print(f"Error: {e}")
         return {"status": "error", "message": str(e)}
