@@ -18,7 +18,57 @@ export default function ReportsPage() {
   const [timeframe, setTimeframe] = useState<"daily" | "weekly" | "monthly">("weekly");
 
   const triggerExport = (format: "pdf" | "csv") => {
-    alert(`REPORT EXPORT: Preparing ${timeframe.toUpperCase()} diagnostic report in ${format.toUpperCase()} format. Download started.`);
+    if (format === "csv") {
+      const headers = "Day,Obstacles,Warnings,Stops\n";
+      const rows = reportData.map(r => `${r.name},${r.obstacles},${r.warnings},${r.stops}`).join("\n");
+      const blob = new Blob([headers + rows], { type: "text/csv" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `OAVAS_${timeframe.toUpperCase()}_Report_${new Date().toISOString().split("T")[0]}.csv`;
+      link.click();
+      URL.revokeObjectURL(url);
+    } else {
+      import("jspdf").then((jsPDFModule) => {
+        const jsPDF = jsPDFModule.default;
+        import("jspdf-autotable").then(() => {
+          const doc = new jsPDF();
+          
+          // Header
+          doc.setFontSize(18);
+          doc.text("OAVAS System Diagnostics Report", 14, 22);
+          doc.setFontSize(11);
+          doc.setTextColor(100);
+          doc.text(`Generated: ${new Date().toLocaleString()} | Timeframe: ${timeframe.toUpperCase()}`, 14, 30);
+          
+          // Summary Metrics
+          doc.setTextColor(0);
+          doc.setFontSize(14);
+          doc.text("Summary Metrics", 14, 45);
+          
+          const totalObstacles = reportData.reduce((acc, curr) => acc + curr.obstacles, 0);
+          const totalWarnings = reportData.reduce((acc, curr) => acc + curr.warnings, 0);
+          
+          doc.setFontSize(11);
+          doc.text(`Total Spotted Targets: ${totalObstacles}`, 14, 55);
+          doc.text(`Interrupts Triggered: ${totalWarnings}`, 14, 62);
+          doc.text("Average AI Confidence: 91.4%", 14, 69);
+          
+          // Table
+          const tableData = reportData.map(r => [r.name, r.obstacles.toString(), r.warnings.toString(), r.stops.toString()]);
+          
+          (doc as any).autoTable({
+            startY: 80,
+            head: [["Day", "Obstacles", "Warnings", "Stops"]],
+            body: tableData,
+            theme: 'striped',
+            headStyles: { fillColor: [11, 61, 145] },
+          });
+          
+          doc.save(`OAVAS_${timeframe.toUpperCase()}_Report.pdf`);
+        });
+      });
+    }
   };
 
   return (

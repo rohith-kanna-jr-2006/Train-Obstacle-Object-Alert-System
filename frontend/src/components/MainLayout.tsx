@@ -30,7 +30,9 @@ import {
   Volume2,
   VolumeX,
   Maximize,
-  Minimize
+  Minimize,
+  PieChart,
+  ScrollText
 } from "lucide-react";
 import { useAlertStore } from "@/store/alertStore";
 import { useGPSStore } from "@/store/gpsStore";
@@ -48,6 +50,8 @@ const navigationItems = [
   { name: "Stations", href: "/stations", icon: Train },
   { name: "Track", href: "/track", icon: GitCommit },
   { name: "Alerts", href: "/alerts", icon: Bell },
+  { name: "Logs", href: "/logs", icon: ScrollText },
+  { name: "Analytics", href: "/analytics", icon: PieChart },
   { name: "Reports", href: "/reports", icon: FileText },
   { name: "Settings", href: "/settings", icon: Settings },
 ];
